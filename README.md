@@ -21,10 +21,7 @@ cd zaman-panel
 pip install -r requirements.txt
 ```
 
-3. `.env` dosyası oluşturun ve gerekli API anahtarlarını ekleyin:
-```
-YOUTUBE_API_KEY=your_api_key
-```
+
 
 4. Uygulamayı çalıştırın:
 ```bash

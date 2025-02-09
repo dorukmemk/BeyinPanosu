@@ -551,6 +551,19 @@
             <span>İstatistik</span>
         </button>
     </nav>
+
+    <div class="music-player" id="musicPlayer">
+        <div class="music-controls">
+            <input type="file" id="audioFileInput" accept="audio/*" style="display: none;">
+            <button onclick="document.getElementById('audioFileInput').click()">Müzik Ekle</button>
+            <button id="playPauseBtn">Oynat</button>
+            <button id="stopBtn">Durdur</button>
+        </div>
+        <div class="music-info">
+            <p id="currentTrack">Şarkı seçilmedi</p>
+            <audio id="audioPlayer"></audio>
+        </div>
+    </div>
 </div>
 {% endblock %}
 

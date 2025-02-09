@@ -1079,4 +1079,36 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('currentDate').textContent = today.toLocaleDateString('tr-TR', { weekday: 'long', day: 'numeric', month: 'long' });
         document.getElementById('currentDate').setAttribute('data-date', today.toISOString());
     });
+
+    // YouTube API ile ilgili tüm kodları kaldırıp yerine basit müzik çalar kodlarını ekleyelim
+    const audioPlayer = document.getElementById('audioPlayer');
+    const audioFileInput = document.getElementById('audioFileInput');
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const currentTrack = document.getElementById('currentTrack');
+
+    audioFileInput.addEventListener('change', function (e) {
+        const file = e.target.files[0];
+        if (file) {
+            const url = URL.createObjectURL(file);
+            audioPlayer.src = url;
+            currentTrack.textContent = file.name;
+        }
+    });
+
+    playPauseBtn.addEventListener('click', function () {
+        if (audioPlayer.paused) {
+            audioPlayer.play();
+            playPauseBtn.textContent = 'Duraklat';
+        } else {
+            audioPlayer.pause();
+            playPauseBtn.textContent = 'Oynat';
+        }
+    });
+
+    stopBtn.addEventListener('click', function () {
+        audioPlayer.pause();
+        audioPlayer.currentTime = 0;
+        playPauseBtn.textContent = 'Oynat';
+    });
 }); 

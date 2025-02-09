@@ -442,7 +442,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Save changes to event
-    function saveEventChanges() {
+    async function saveEventChanges() {
         if (!activeEventId) return;
 
         const event = calendar.getEventById(activeEventId);
@@ -450,53 +450,41 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const formData = getFormData();
 
-        // Sadece metin tabanlı özellikleri güncelle
-        event.setProp('title', formData.title);
+        // Etkinliği güncelle
+        event.setProp('title', formData.title || 'Untitled');
         event.setProp('classNames', [formData.category]);
+        event.setAllDay(formData.allDay);
+
+        // Tarihleri güncelle
+        if (formData.start) {
+            event.setStart(new Date(formData.start));
+        }
+        if (formData.end) {
+            event.setEnd(new Date(formData.end));
+        }
+
+        // Extended özellikleri güncelle
         event.setExtendedProp('description', formData.description);
         event.setExtendedProp('priority', formData.priority);
         event.setExtendedProp('reminder', formData.reminder);
         event.setExtendedProp('recurring', formData.recurring);
 
-        // API'ye gönderilecek veriyi hazırla
-        const eventData = {
-            event: {
-                title: formData.title,
-                start: event.start.toISOString(),
-                end: event.end.toISOString()
-            }
-        };
-
-        // API'ye güncelleme gönder
-        fetch(`/api/events/${event.id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(eventData)
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Sunucu yanıtı başarısız');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (!data.success) {
-                    console.error('Etkinlik güncellenemedi:', data.error);
-                } else {
-                    // Başarılı güncelleme durumunda localStorage'ı güncelle
-                    saveEvents();
-                }
-            })
-            .catch(error => {
-                console.error('Güncelleme hatası:', error);
-            });
-
         // Renk güncelleme
         const customColorInput = document.querySelector('.custom-color-input');
         if (customColorInput) {
-            event.setProp('backgroundColor', customColorInput.value);
+            const color = customColorInput.value;
+            event.setProp('backgroundColor', color);
+            event.setProp('borderColor', color);
+        }
+
+        // Değişiklikleri kaydet
+        await saveEvents();
+
+        // API'ye güncelleme gönder
+        try {
+            await syncEventWithAPI(event, 'update');
+        } catch (error) {
+            console.error('API güncelleme hatası:', error);
         }
     }
 
@@ -627,13 +615,18 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Load events from localStorage
-    function loadEvents() {
+    async function loadEvents() {
         try {
+            // Önce localStorage'dan yükle
             const savedEvents = JSON.parse(localStorage.getItem('calendarEvents') || '[]');
             if (!Array.isArray(savedEvents)) {
                 throw new Error('Geçersiz veri formatı');
             }
 
+            // Mevcut tüm etkinlikleri temizle
+            calendar.removeAllEvents();
+
+            // Etkinlikleri ekle
             savedEvents.forEach(eventData => {
                 if (eventData && eventData.start && eventData.end) {
                     try {
@@ -659,11 +652,35 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 }
             });
+
+            // JSON dosyasından da yükle ve birleştir
+            try {
+                const response = await fetch('/api/events');
+                if (response.ok) {
+                    const jsonEvents = await response.json();
+                    if (Array.isArray(jsonEvents)) {
+                        jsonEvents.forEach(eventData => {
+                            if (!savedEvents.some(e => e.id === eventData.id)) {
+                                if (eventData && eventData.start && eventData.end) {
+                                    const event = {
+                                        ...eventData,
+                                        start: new Date(eventData.start),
+                                        end: new Date(eventData.end),
+                                        backgroundColor: eventData.backgroundColor || getColorForEventClass(eventData.className?.[0])
+                                    };
+                                    calendar.addEvent(event);
+                                }
+                            }
+                        });
+                    }
+                }
+            } catch (jsonError) {
+                console.error('JSON dosyasından yükleme hatası:', jsonError);
+            }
         } catch (error) {
             console.error('Etkinlikler yüklenirken hata:', error);
-            // Hata durumunda localStorage'ı sıfırla
             localStorage.setItem('calendarEvents', JSON.stringify([]));
-            saveEventsToJSON(); // JSON dosyasını da sıfırla
+            saveEventsToJSON();
         }
     }
 
@@ -713,7 +730,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Save events to localStorage and JSON
-    function saveEvents() {
+    async function saveEvents() {
         try {
             const eventMap = new Map();
 
@@ -746,8 +763,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
 
             const events = Array.from(eventMap.values());
+
+            // localStorage'a kaydet
             localStorage.setItem('calendarEvents', JSON.stringify(events));
-            saveEventsToJSON(); // JSON dosyasına da kaydet
+
+            // JSON dosyasına kaydet
+            await saveEventsToJSON();
+
+            // Takvimi yenile
+            await loadEvents();
         } catch (error) {
             console.error('Etkinlikler kaydedilirken hata:', error);
         }
@@ -990,4 +1014,80 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error('Error initializing components:', error);
         }
     });
+
+    async function handleDateSelect(selectInfo) {
+        // Modal'ı aç ve form değerlerini ayarla
+        const modal = document.getElementById('eventModal');
+        if (modal) {
+            modal.style.opacity = 0;
+            modal.style.display = 'block';
+            setTimeout(() => {
+                modal.style.opacity = 1;
+            }, 10);
+
+            // Yeni etkinliği oluştur
+            const newEventId = 'new-event-' + Date.now();
+            const event = {
+                id: newEventId,
+                title: 'Untitled',
+                start: selectInfo.start,
+                end: selectInfo.end || new Date(selectInfo.start.getTime() + 3600000),
+                allDay: selectInfo.allDay,
+                className: ['event-work'],
+                backgroundColor: '#6366f1',
+                borderColor: '#6366f1',
+                extendedProps: {
+                    description: '',
+                    priority: 'medium',
+                    recurring: 'none',
+                    reminder: '30',
+                    isRecurring: false,
+                    recurringDays: [],
+                    category: 'default'
+                }
+            };
+
+            // Form değerlerini sıfırla
+            const form = document.getElementById('eventForm');
+            if (form) {
+                // Önceki event ID'sini temizle ve yenisini ata
+                activeEventId = newEventId;
+                form.dataset.eventId = newEventId;
+
+                // Form değerlerini sıfırla
+                form.querySelector('#eventTitle').value = '';
+                form.querySelector('#eventDescription').value = '';
+                form.querySelector('#eventCategory').value = 'event-work';
+                form.querySelector('#eventPriority').value = 'medium';
+                form.querySelector('#eventRecurring').value = 'none';
+                form.querySelector('#eventReminder').value = '30';
+                form.querySelector('#eventAllDay').checked = event.allDay;
+
+                // Tarihleri ayarla
+                form.querySelector('#eventStart').value = formatDateForInput(event.start);
+                form.querySelector('#eventEnd').value = formatDateForInput(event.end);
+
+                // Renk seçiciyi sıfırla
+                const colorPicker = form.querySelector('.color-picker');
+                if (colorPicker) {
+                    colorPicker.querySelectorAll('.color-swatch').forEach(swatch => {
+                        swatch.classList.remove('selected');
+                    });
+                    const defaultSwatch = colorPicker.querySelector('[data-color="#6366f1"]');
+                    if (defaultSwatch) {
+                        defaultSwatch.classList.add('selected');
+                    }
+                }
+
+                // Etkinliği takvime ekle
+                try {
+                    calendar.addEvent(event);
+                    calendar.unselect();
+                    await saveEvents();
+                } catch (error) {
+                    console.error('Etkinlik oluşturulurken hata:', error);
+                }
+            }
+        }
+    }
 });

@@ -27,16 +27,35 @@ export class EventManager {
     }
 
     async saveEventChanges(event) {
-        const existingEventIndex = this.events.findIndex(e => e.id === event.id);
+        try {
+            // Mevcut etkinlikleri al
+            const events = JSON.parse(localStorage.getItem('calendarEvents') || '[]');
 
-        if (existingEventIndex !== -1) {
-            this.events[existingEventIndex] = event;
-        } else {
-            event.id = event.id || 'event-' + Date.now();
-            this.events.push(event);
+            // Etkinliği formatla
+            const formattedEvent = this.formatEvent(event);
+
+            // Etkinliği güncelle veya ekle
+            const existingEventIndex = events.findIndex(e => e.id === formattedEvent.id);
+
+            if (existingEventIndex !== -1) {
+                // Mevcut etkinliği güncelle
+                events[existingEventIndex] = formattedEvent;
+            } else {
+                // Yeni etkinlik ekle
+                events.push(formattedEvent);
+            }
+
+            // localStorage'ı güncelle
+            localStorage.setItem('calendarEvents', JSON.stringify(events));
+
+            // Sınıf içindeki events array'ini güncelle
+            this.events = events;
+
+            return true;
+        } catch (error) {
+            console.error('Etkinlik kaydedilirken hata:', error);
+            return false;
         }
-
-        return await this.saveEvents();
     }
 
     async deleteEvent(eventId) {

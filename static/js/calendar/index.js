@@ -143,9 +143,12 @@ export class CalendarApp {
 
     async saveFormChanges() {
         const form = document.getElementById('eventForm');
-        if (!form) return;
+        if (!form || !this.activeEventId) return;
 
         try {
+            const event = this.calendar.getEventById(this.activeEventId);
+            if (!event) return;
+
             const selectedColor = form.querySelector('.color-swatch.selected')?.getAttribute('data-color');
             const recurring = form.querySelector('#eventRecurring').value;
             const startDate = new Date(form.querySelector('#eventStart').value);
@@ -166,96 +169,36 @@ export class CalendarApp {
                     priority: form.querySelector('#eventPriority').value || 'medium',
                     recurring: recurring,
                     reminder: form.querySelector('#eventReminder').value || '30',
-                    isRecurring: false
+                    isRecurring: false,
+                    recurringDays: [],
+                    category: form.querySelector('#eventCategory').value
                 }
             };
 
-            // Mevcut tüm etkinlikleri al
-            let allEvents = JSON.parse(localStorage.getItem('calendarEvents') || '[]');
+            // Mevcut etkinliği güncelle
+            event.setProp('title', baseEvent.title);
+            event.setProp('allDay', baseEvent.allDay);
+            event.setStart(baseEvent.start);
+            event.setEnd(baseEvent.end);
+            event.setProp('backgroundColor', baseEvent.backgroundColor);
+            event.setProp('borderColor', baseEvent.borderColor);
+            event.setProp('classNames', baseEvent.className);
+            event.setExtendedProp('description', baseEvent.extendedProps.description);
+            event.setExtendedProp('priority', baseEvent.extendedProps.priority);
+            event.setExtendedProp('recurring', baseEvent.extendedProps.recurring);
+            event.setExtendedProp('reminder', baseEvent.extendedProps.reminder);
+            event.setExtendedProp('category', baseEvent.extendedProps.category);
 
-            // Ana etkinlik ve onun tekrarlarını kaldır
-            allEvents = allEvents.filter(event =>
-                event.id !== this.activeEventId &&
-                event.extendedProps?.parentEventId !== this.activeEventId
-            );
+            // EventManager'a kaydet
+            await eventManager.saveEventChanges(baseEvent);
 
-            // Takvimden de kaldır
-            this.calendar.getEvents().forEach(event => {
-                if (event.id === this.activeEventId ||
-                    event.extendedProps?.parentEventId === this.activeEventId) {
-                    event.remove();
-                }
-            });
-
-            // Ana etkinliği ekle
-            allEvents.push(baseEvent);
-
-            // Tekrarlanan etkinlikleri oluştur
+            // Tekrarlanan etkinlikleri güncelle
             if (recurring !== 'none') {
-                const duration = endDate.getTime() - startDate.getTime();
-                let currentDate = new Date(startDate);
-                currentDate.setDate(currentDate.getDate() + 1); // Ana etkinlikten sonraki gün başla
-
-                // Bitiş tarihini belirle
-                const endRecurring = new Date(startDate);
-                switch (recurring) {
-                    case 'daily':
-                        endRecurring.setDate(endRecurring.getDate() + 7); // 1 hafta
-                        break;
-                    case 'weekly':
-                        endRecurring.setDate(endRecurring.getDate() + 28); // 4 hafta
-                        break;
-                    case 'monthly':
-                        endRecurring.setMonth(endRecurring.getMonth() + 3); // 3 ay
-                        break;
-                    case 'yearly':
-                        endRecurring.setFullYear(endRecurring.getFullYear() + 1); // 1 yıl
-                        break;
-                }
-
-                // Tekrarlanan etkinlikleri oluştur
-                while (currentDate <= endRecurring) {
-                    const newEvent = {
-                        ...baseEvent,
-                        id: 'recurring-' + this.activeEventId + '-' + currentDate.getTime(),
-                        start: new Date(currentDate),
-                        end: new Date(currentDate.getTime() + duration),
-                        extendedProps: {
-                            ...baseEvent.extendedProps,
-                            parentEventId: this.activeEventId,
-                            isRecurring: true
-                        }
-                    };
-
-                    allEvents.push(newEvent);
-
-                    // Sonraki tarihe geç
-                    switch (recurring) {
-                        case 'daily':
-                            currentDate.setDate(currentDate.getDate() + 1);
-                            break;
-                        case 'weekly':
-                            currentDate.setDate(currentDate.getDate() + 7);
-                            break;
-                        case 'monthly':
-                            currentDate.setMonth(currentDate.getMonth() + 1);
-                            break;
-                        case 'yearly':
-                            currentDate.setFullYear(currentDate.getFullYear() + 1);
-                            break;
-                    }
-                }
+                await this.handleRecurringEvents(event, baseEvent);
             }
 
-            // localStorage'ı güncelle
-            localStorage.setItem('calendarEvents', JSON.stringify(allEvents));
-
-            // Takvimi yenile
-            await this.loadEvents();
-
         } catch (error) {
-            console.error('Değişiklikler kaydedilirken hata:', error);
-            alert('Değişiklikler kaydedilirken bir hata oluştu!');
+            console.error('Form değişiklikleri kaydedilirken hata:', error);
         }
     }
 
@@ -361,7 +304,7 @@ export class CalendarApp {
             const newEventId = 'new-event-' + Date.now();
             const event = {
                 id: newEventId,
-                title: 'Untitled',
+                title: '',
                 start: selectInfo.start,
                 end: selectInfo.end || new Date(selectInfo.start.getTime() + 3600000),
                 allDay: selectInfo.allDay,
@@ -372,18 +315,23 @@ export class CalendarApp {
                     description: '',
                     priority: 'medium',
                     recurring: 'none',
-                    reminder: '30'
+                    reminder: '30',
+                    isRecurring: false,
+                    recurringDays: [],
+                    category: 'default'
                 }
             };
 
-            // Form değerlerini ayarla
+            // Form değerlerini sıfırla
             const form = document.getElementById('eventForm');
             if (form) {
+                // Önceki event ID'sini temizle ve yenisini ata
                 this.activeEventId = newEventId;
                 form.dataset.eventId = newEventId;
 
-                // Form değerlerini ayarla
-                form.querySelector('#eventTitle').value = event.title;
+                // Form değerlerini sıfırla
+                form.querySelector('#eventTitle').value = '';
+                form.querySelector('#eventDescription').value = '';
                 form.querySelector('#eventCategory').value = 'event-work';
                 form.querySelector('#eventPriority').value = 'medium';
                 form.querySelector('#eventRecurring').value = 'none';
@@ -394,11 +342,25 @@ export class CalendarApp {
                 form.querySelector('#eventStart').value = this.formatDateForInput(event.start);
                 form.querySelector('#eventEnd').value = this.formatDateForInput(event.end);
 
-                // Etkinliği kaydet ve takvime ekle
+                // Renk seçiciyi sıfırla
+                const colorPicker = form.querySelector('.color-picker');
+                if (colorPicker) {
+                    colorPicker.querySelectorAll('.color-swatch').forEach(swatch => {
+                        swatch.classList.remove('selected');
+                    });
+                    const defaultSwatch = colorPicker.querySelector('[data-color="#6366f1"]');
+                    if (defaultSwatch) {
+                        defaultSwatch.classList.add('selected');
+                    }
+                }
+
+                // Etkinliği takvime ekle
                 try {
-                    await eventManager.saveEventChanges(event);
+                    const calendarEvent = this.calendar.addEvent(event);
                     this.calendar.unselect();
-                    await this.loadEvents();
+
+                    // EventManager'a kaydet
+                    await eventManager.saveEventChanges(event);
                 } catch (error) {
                     console.error('Etkinlik oluşturulurken hata:', error);
                 }
