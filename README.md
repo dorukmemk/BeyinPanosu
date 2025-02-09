@@ -1,5 +1,4 @@
-# Zaman Panel
-
+# Beyin Panosu
 Zaman yönetimi ve verimlilik için geliştirilmiş bir web uygulaması.
 
 ## Özellikler
