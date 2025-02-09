@@ -1,0 +1,565 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="time-container">
+    <!-- Mod Değiştirme Butonu -->
+    <button class="mode-switch" id="modeSwitch">
+        <i class="fas fa-clock"></i>
+        <span>Pomodoro</span>
+    </button>
+
+    <!-- Saat Gösterimi -->
+    <div class="time-display" id="clockDisplay">
+        <span id="time">20:49</span>
+        <span id="seconds" class="seconds">00</span>
+    </div>
+
+    <!-- Pomodoro Gösterimi -->
+    <div class="pomodoro-display" id="pomodoroDisplay" style="display: none;">
+        <div class="pomodoro-timer">25:00</div>
+        <div class="pomodoro-controls">
+            <button class="pomodoro-btn" id="startPomodoro">
+                <i class="fas fa-play"></i>
+            </button>
+            <button class="pomodoro-btn" id="resetPomodoro">
+                <i class="fas fa-redo"></i>
+            </button>
+        </div>
+        <div class="pomodoro-settings">
+            <div class="duration-control">
+                <label>Çalışma</label>
+                <div class="duration-input">
+                    <button class="duration-btn" data-action="decrease" data-target="work">-</button>
+                    <input type="number" id="workDuration" value="25" min="1" max="60">
+                    <button class="duration-btn" data-action="increase" data-target="work">+</button>
+                </div>
+            </div>
+            <div class="duration-control">
+                <label>Mola</label>
+                <div class="duration-input">
+                    <button class="duration-btn" data-action="decrease" data-target="break">-</button>
+                    <input type="number" id="breakDuration" value="5" min="1" max="30">
+                    <button class="duration-btn" data-action="increase" data-target="break">+</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tab İçerikleri -->
+    <div id="customizeTab" class="tab-content">
+        <div class="customize-options">
+            <!-- Temel Ayarlar -->
+            <div class="option-group">
+                <h3>Temel Ayarlar</h3>
+                <div class="option">
+                    <label>Saniye Göster</label>
+                    <label class="switch">
+                        <input type="checkbox" id="showSeconds">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="option">
+                    <label>24 Saat Formatı</label>
+                    <label class="switch">
+                        <input type="checkbox" id="use24Hour" checked>
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Yazı Tipi Ayarları -->
+            <div class="option-group">
+                <h3>Yazı Tipi</h3>
+                <div class="option">
+                    <label>Font</label>
+                    <select id="fontSelect">
+                        <option value="'Roboto Mono', monospace">Roboto Mono</option>
+                        <option value="'Digital-7', monospace">Digital</option>
+                        <option value="'Share Tech Mono', monospace">Tech Mono</option>
+                        <option value="'Orbitron', sans-serif">Orbitron</option>
+                        <option value="'Press Start 2P', cursive">Press Start 2P</option>
+                        <option value="'VT323', monospace">VT323</option>
+                    </select>
+                </div>
+                <div class="option">
+                    <label>Kalınlık</label>
+                    <select id="fontWeight">
+                        <option value="normal">Normal</option>
+                        <option value="bold">Kalın</option>
+                        <option value="100">İnce</option>
+                        <option value="900">Ekstra Kalın</option>
+                    </select>
+                </div>
+                <div class="option">
+                    <label>Harf Aralığı</label>
+                    <input type="range" id="letterSpacing" min="-5" max="20" value="0">
+                    <span class="value-display">0px</span>
+                </div>
+            </div>
+
+            <!-- Renk Ayarları -->
+            <div class="option-group">
+                <h3>Renk</h3>
+                <div class="option">
+                    <label>Ana Renk</label>
+                    <div class="color-options">
+                        <input type="color" id="colorPicker" value="#ffffff">
+                        <div class="preset-colors">
+                            <button class="color-preset" data-color="#ffffff"
+                                style="background-color: #ffffff"></button>
+                            <button class="color-preset" data-color="#00ff00"
+                                style="background-color: #00ff00"></button>
+                            <button class="color-preset" data-color="#ff0000"
+                                style="background-color: #ff0000"></button>
+                            <button class="color-preset" data-color="#00ffff"
+                                style="background-color: #00ffff"></button>
+                            <button class="color-preset" data-color="#ff00ff"
+                                style="background-color: #ff00ff"></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="option">
+                    <label>Saniye Rengi</label>
+                    <div class="color-options">
+                        <input type="color" id="secondsColorPicker" value="#888888">
+                    </div>
+                </div>
+                <div class="option">
+                    <label>Opaklık</label>
+                    <input type="range" id="opacity" min="20" max="100" value="100">
+                    <span class="value-display">100%</span>
+                </div>
+            </div>
+
+            <!-- Boyut Ayarları -->
+            <div class="option-group">
+                <h3>Boyut</h3>
+                <div class="option">
+                    <label>Ana Boyut</label>
+                    <div class="size-control">
+                        <button id="decreaseSize" class="size-btn"><i class="fas fa-minus"></i></button>
+                        <input type="range" id="sizeSlider" min="100" max="400" value="200" step="10">
+                        <button id="increaseSize" class="size-btn"><i class="fas fa-plus"></i></button>
+                        <span id="sizeValue">200px</span>
+                    </div>
+                </div>
+                <div class="option">
+                    <label>Saniye Boyutu</label>
+                    <input type="range" id="secondsSize" min="20" max="100" value="40">
+                    <span class="value-display">40%</span>
+                </div>
+            </div>
+
+            <!-- Arka Plan Ayarları -->
+            <div class="option-group">
+                <h3>Arka Plan</h3>
+                <div class="option">
+                    <label>Tip</label>
+                    <select id="backgroundType">
+                        <option value="theme">Hazır Tema</option>
+                        <option value="solid">Düz Renk</option>
+                        <option value="gradient">Gradyan</option>
+                        <option value="pattern">Desen</option>
+                        <option value="image">Görsel</option>
+                    </select>
+                </div>
+
+                <div class="option" id="themeOption">
+                    <label>Tema</label>
+                    <div class="theme-grid">
+                        <button class="theme-btn" data-theme="dark-minimal">
+                            <div class="theme-preview" data-theme="dark-minimal">
+                                <span>Koyu Minimal</span>
+                            </div>
+                        </button>
+                        <button class="theme-btn" data-theme="light-minimal">
+                            <div class="theme-preview" data-theme="light-minimal">
+                                <span>Açık Minimal</span>
+                            </div>
+                        </button>
+                        <button class="theme-btn" data-theme="modern-dark">
+                            <div class="theme-preview" data-theme="modern-dark">
+                                <span>Modern Koyu</span>
+                            </div>
+                        </button>
+                        <button class="theme-btn" data-theme="modern-light">
+                            <div class="theme-preview" data-theme="modern-light">
+                                <span>Modern Açık</span>
+                            </div>
+                        </button>
+                        <button class="theme-btn" data-theme="night-sky">
+                            <div class="theme-preview" data-theme="night-sky">
+                                <span>Gece Gökyüzü</span>
+                            </div>
+                        </button>
+                        <button class="theme-btn" data-theme="midnight-bloom">
+                            <div class="theme-preview" data-theme="midnight-bloom">
+                                <span>Gece Mavisi</span>
+                            </div>
+                        </button>
+                        <button class="theme-btn" data-theme="deep-space">
+                            <div class="theme-preview" data-theme="deep-space">
+                                <span>Derin Uzay</span>
+                            </div>
+                        </button>
+                        <button class="theme-btn" data-theme="nordic-frost">
+                            <div class="theme-preview" data-theme="nordic-frost">
+                                <span>Nordic Frost</span>
+                            </div>
+                        </button>
+                        <button class="theme-btn" data-theme="pastel-dream">
+                            <div class="theme-preview" data-theme="pastel-dream">
+                                <span>Pastel Rüya</span>
+                            </div>
+                        </button>
+                        <button class="theme-btn" data-theme="cherry-blossom">
+                            <div class="theme-preview" data-theme="cherry-blossom">
+                                <span>Kiraz Çiçeği</span>
+                            </div>
+                        </button>
+                        <button class="theme-btn" data-theme="bamboo-forest">
+                            <div class="theme-preview" data-theme="bamboo-forest">
+                                <span>Bambu Ormanı</span>
+                            </div>
+                        </button>
+                        <button class="theme-btn" data-theme="autumn-breeze">
+                            <div class="theme-preview" data-theme="autumn-breeze">
+                                <span>Sonbahar</span>
+                            </div>
+                        </button>
+                        <button class="theme-btn" data-theme="desert-night">
+                            <div class="theme-preview" data-theme="desert-night">
+                                <span>Çöl Gecesi</span>
+                            </div>
+                        </button>
+                        <button class="theme-btn" data-theme="neon-city">
+                            <div class="theme-preview" data-theme="neon-city">
+                                <span>Neon Şehir</span>
+                            </div>
+                        </button>
+                        <button class="theme-btn" data-theme="cyber">
+                            <div class="theme-preview" data-theme="cyber">
+                                <span>Siber</span>
+                            </div>
+                        </button>
+                        <button class="theme-btn" data-theme="retro">
+                            <div class="theme-preview" data-theme="retro">
+                                <span>Retro</span>
+                            </div>
+                        </button>
+                        <button class="theme-btn" data-theme="matrix">
+                            <div class="theme-preview" data-theme="matrix">
+                                <span>Matrix</span>
+                            </div>
+                        </button>
+                        <button class="theme-btn" data-theme="synthwave">
+                            <div class="theme-preview" data-theme="synthwave">
+                                <span>Synthwave</span>
+                            </div>
+                        </button>
+                        <button class="theme-btn" data-theme="minimal-dots">
+                            <div class="theme-preview" data-theme="minimal-dots">
+                                <span>Minimal Nokta</span>
+                            </div>
+                        </button>
+                        <button class="theme-btn" data-theme="minimal-grid">
+                            <div class="theme-preview" data-theme="minimal-grid">
+                                <span>Minimal Izgara</span>
+                            </div>
+                        </button>
+                        <button class="theme-btn" data-theme="light-dots">
+                            <div class="theme-preview" data-theme="light-dots">
+                                <span>Açık Nokta</span>
+                            </div>
+                        </button>
+                        <button class="theme-btn" data-theme="light-grid">
+                            <div class="theme-preview" data-theme="light-grid">
+                                <span>Açık Izgara</span>
+                            </div>
+                        </button>
+                        <button class="theme-btn" data-theme="tech-lines">
+                            <div class="theme-preview" data-theme="tech-lines">
+                                <span>Tech Çizgi</span>
+                            </div>
+                        </button>
+                        <button class="theme-btn" data-theme="ocean-waves">
+                            <div class="theme-preview" data-theme="ocean-waves">
+                                <span>Okyanus Dalga</span>
+                            </div>
+                        </button>
+                        <button class="theme-btn" data-theme="sunset-gradient">
+                            <div class="theme-preview" data-theme="sunset-gradient">
+                                <span>Gün Batımı</span>
+                            </div>
+                        </button>
+                        <button class="theme-btn" data-theme="purple-haze">
+                            <div class="theme-preview" data-theme="purple-haze">
+                                <span>Mor Sis</span>
+                            </div>
+                        </button>
+                        <button class="theme-btn" data-theme="emerald-city">
+                            <div class="theme-preview" data-theme="emerald-city">
+                                <span>Zümrüt Şehir</span>
+                            </div>
+                        </button>
+                        <button class="theme-btn" data-theme="golden-hour">
+                            <div class="theme-preview" data-theme="golden-hour">
+                                <span>Altın Saat</span>
+                            </div>
+                        </button>
+                        <button class="theme-btn" data-theme="arctic-aurora">
+                            <div class="theme-preview" data-theme="arctic-aurora">
+                                <span>Kutup Işıkları</span>
+                            </div>
+                        </button>
+                        <button class="theme-btn" data-theme="midnight-oil">
+                            <div class="theme-preview" data-theme="midnight-oil">
+                                <span>Gece Lambası</span>
+                            </div>
+                        </button>
+                        <button class="theme-btn" data-theme="dark-grid-cyber">
+                            <div class="theme-preview" data-theme="dark-grid-cyber">
+                                <span>Siber Izgara</span>
+                            </div>
+                        </button>
+                        <button class="theme-btn" data-theme="dark-dots-neon">
+                            <div class="theme-preview" data-theme="dark-dots-neon">
+                                <span>Neon Nokta</span>
+                            </div>
+                        </button>
+                        <button class="theme-btn" data-theme="dark-lines-cyber">
+                            <div class="theme-preview" data-theme="dark-lines-cyber">
+                                <span>Siber Çizgi</span>
+                            </div>
+                        </button>
+                        <button class="theme-btn" data-theme="dark-waves-neon">
+                            <div class="theme-preview" data-theme="dark-waves-neon">
+                                <span>Neon Dalga</span>
+                            </div>
+                        </button>
+                        <button class="theme-btn" data-theme="dark-grid-purple">
+                            <div class="theme-preview" data-theme="dark-grid-purple">
+                                <span>Mor Izgara</span>
+                            </div>
+                        </button>
+                        <button class="theme-btn" data-theme="dark-dots-green">
+                            <div class="theme-preview" data-theme="dark-dots-green">
+                                <span>Yeşil Nokta</span>
+                            </div>
+                        </button>
+                        <button class="theme-btn" data-theme="dark-grid-blue">
+                            <div class="theme-preview" data-theme="dark-grid-blue">
+                                <span>Mavi Izgara</span>
+                            </div>
+                        </button>
+                        <button class="theme-btn" data-theme="dark-dots-blue">
+                            <div class="theme-preview" data-theme="dark-dots-blue">
+                                <span>Mavi Nokta</span>
+                            </div>
+                        </button>
+                        <button class="theme-btn" data-theme="dark-lines-blue">
+                            <div class="theme-preview" data-theme="dark-lines-blue">
+                                <span>Mavi Çizgi</span>
+                            </div>
+                        </button>
+                        <button class="theme-btn" data-theme="dark-waves-blue">
+                            <div class="theme-preview" data-theme="dark-waves-blue">
+                                <span>Mavi Dalga</span>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="option" id="imageOption" style="display: none;">
+                    <label>Görsel Yükle</label>
+                    <input type="file" id="bgImageInput" accept="image/*" class="file-input">
+                    <div class="image-preview" id="bgImagePreview"></div>
+                    <div class="image-options">
+                        <select id="imageFit">
+                            <option value="cover">Kapla</option>
+                            <option value="contain">Sığdır</option>
+                            <option value="center">Ortala</option>
+                        </select>
+                        <input type="range" id="imageOpacity" min="20" max="100" value="100">
+                        <span class="value-display">100%</span>
+                    </div>
+                </div>
+
+                <div class="option" id="solidColorOption" style="display: none;">
+                    <label>Renk</label>
+                    <div class="color-options">
+                        <input type="color" id="bgColorPicker" value="#000000">
+                        <div class="preset-colors">
+                            <button class="color-preset" data-color="#000000"
+                                style="background-color: #000000"></button>
+                            <button class="color-preset" data-color="#1a1a1a"
+                                style="background-color: #1a1a1a"></button>
+                            <button class="color-preset" data-color="#2c2c2c"
+                                style="background-color: #2c2c2c"></button>
+                            <button class="color-preset" data-color="#0a192f"
+                                style="background-color: #0a192f"></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="option" id="gradientOption" style="display: none;">
+                    <label>Başlangıç Rengi</label>
+                    <input type="color" id="gradientStart" value="#000000">
+                    <label>Bitiş Rengi</label>
+                    <input type="color" id="gradientEnd" value="#1a1a1a">
+                    <label>Yön</label>
+                    <select id="gradientDirection">
+                        <option value="to right">Sağa</option>
+                        <option value="to bottom">Aşağı</option>
+                        <option value="45deg">Çapraz</option>
+                        <option value="circle">Dairesel</option>
+                    </select>
+                </div>
+
+                <div class="option" id="patternOption" style="display: none;">
+                    <label>Desen</label>
+                    <div class="pattern-grid">
+                        <button class="pattern-btn" data-pattern="dots">Noktalar</button>
+                        <button class="pattern-btn" data-pattern="grid">Izgara</button>
+                        <button class="pattern-btn" data-pattern="lines">Çizgiler</button>
+                        <button class="pattern-btn" data-pattern="waves">Dalgalar</button>
+                    </div>
+                    <label>Arka Plan Rengi</label>
+                    <input type="color" id="patternBgColorPicker" value="#000000">
+                    <label>Desen Rengi</label>
+                    <input type="color" id="patternColor" value="#333333">
+                    <label>Desen Boyutu</label>
+                    <input type="range" id="patternSize" min="5" max="50" value="20">
+                    <span class="value-display">20px</span>
+                </div>
+            </div>
+
+            <!-- Efekt Ayarları -->
+            <div class="option-group">
+                <h3>Efektler</h3>
+                <div class="option">
+                    <label>Tip</label>
+                    <div class="effects-grid">
+                        <button class="effect-btn" data-effect="none">Normal</button>
+                        <button class="effect-btn" data-effect="neon">Neon</button>
+                        <button class="effect-btn" data-effect="shadow">Gölge</button>
+                        <button class="effect-btn" data-effect="gradient">Gradyan</button>
+                        <button class="effect-btn" data-effect="outline">Kontur</button>
+                        <button class="effect-btn" data-effect="blur">Bulanık</button>
+                    </div>
+                </div>
+                <div class="option">
+                    <label>Efekt Yoğunluğu</label>
+                    <input type="range" id="effectIntensity" min="1" max="20" value="5">
+                    <span class="value-display">5</span>
+                </div>
+            </div>
+
+            <!-- Animasyon Ayarları -->
+            <div class="option-group">
+                <h3>Animasyon</h3>
+                <div class="option">
+                    <label>Tip</label>
+                    <div class="animation-options">
+                        <button class="animation-btn" data-animation="none">Yok</button>
+                        <button class="animation-btn" data-animation="pulse">Nabız</button>
+                        <button class="animation-btn" data-animation="bounce">Zıplama</button>
+                        <button class="animation-btn" data-animation="shake">Titreşim</button>
+                        <button class="animation-btn" data-animation="rotate">Dönme</button>
+                        <button class="animation-btn" data-animation="fade">Solma</button>
+                    </div>
+                </div>
+                <div class="option">
+                    <label>Büyüklük</label>
+                    <input type="range" id="animationScale" min="1" max="10" value="5">
+                    <span class="value-display">5</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="statsTab" class="tab-content">
+        <div class="stats-container">
+            <div class="stats-header">
+                <h3>Pomodoro İstatistikleri</h3>
+                <div class="date-selector">
+                    <button id="prevDay"><i class="fas fa-chevron-left"></i></button>
+                    <span id="currentDate">Bugün</span>
+                    <button id="nextDay"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                    <div class="stat-content">
+                        <h4>Toplam Çalışma</h4>
+                        <div class="stat-value" id="totalWorkTime">0 dk</div>
+                        <div class="stat-comparison" id="workComparison">
+                            <span class="diff">0%</span>
+                            <span class="vs">vs dün</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+                    <div class="stat-content">
+                        <h4>Tamamlanan Set</h4>
+                        <div class="stat-value" id="completedSets">0</div>
+                        <div class="stat-comparison" id="setsComparison">
+                            <span class="diff">0%</span>
+                            <span class="vs">vs dün</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-coffee"></i></div>
+                    <div class="stat-content">
+                        <div id="alarmTab" class="tab-content">
+                            <div class="alarm-container">
+                                <div class="alarm-list">
+                                    <!-- Alarmlar buraya eklenecek -->
+                                </div>
+                                <div class="alarm-add">
+                                    <input type="time" id="alarmTime">
+                                    <button class="btn" id="addAlarm">Alarm Ekle</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="stats-chart">
+                <canvas id="weeklyChart"></canvas>
+            </div>
+            <div class="daily-activities">
+                <h4>Günlük Aktiviteler</h4>
+                <div class="activity-list" id="activityList">
+                    <!-- Aktiviteler buraya eklenecek -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigasyon Butonları -->
+    <nav class="time-nav">
+        <button class="nav-btn" data-tab="customizeTab">
+            <i class="fas fa-palette"></i>
+            <span>Özelleştir</span>
+        </button>
+        <button class="nav-btn" data-tab="statsTab">
+            <i class="fas fa-chart-line"></i>
+            <span>İstatistik</span>
+        </button>
+    </nav>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<link
+    href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700&family=Press+Start+2P&family=VT323&display=swap"
+    rel="stylesheet">
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/time/time.js') }}"></script>
+{% endblock %}

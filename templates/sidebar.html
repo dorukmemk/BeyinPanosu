@@ -1,0 +1,23 @@
+<!-- Sidebar -->
+<div id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+                <i class="fas fa-calendar-alt"></i>
+        </div>
+
+        <div class="sidebar-menu">
+                <a href="/" class="{{ 'active' if request.endpoint == 'index' }}" data-tooltip="Takvim"><i
+                                class="fas fa-calendar"></i></a>
+                <a href="/time" class="{{ 'active' if request.endpoint == 'time' }}" data-tooltip="Saat"><i
+                                class="fas fa-clock"></i></a>
+                <a href="/music" class="{{ 'active' if request.endpoint == 'music' }}" data-tooltip="Müzik"><i
+                                class="fas fa-music"></i></a>
+                <a href="#" class="{{ 'active' if request.endpoint == 'tasks' }}" data-tooltip="Görevler"><i
+                                class="fas fa-tasks"></i></a>
+                <a href="#" class="{{ 'active' if request.endpoint == 'notes' }}" data-tooltip="Notlar"><i
+                                class="fas fa-sticky-note"></i></a>
+                <a href="#" class="{{ 'active' if request.endpoint == 'analytics' }}" data-tooltip="Analitik"><i
+                                class="fas fa-chart-line"></i></a>
+                <a href="/settings" class="{{ 'active' if request.endpoint == 'settings' }}" data-tooltip="Ayarlar"><i
+                                class="fas fa-cog"></i></a>
+        </div>
+</div>

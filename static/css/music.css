@@ -1,0 +1,527 @@
+/* Müzik Sayfası Ana Container */
+.music-container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Müzik Header */
+.music-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.music-header h1 {
+    font-size: 2rem;
+    color: var(--music-text);
+    margin: 0;
+}
+
+.btn-primary {
+    background: var(--music-accent);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: var(--music-accent-hover);
+    transform: translateY(-2px);
+}
+
+/* Müzik Player */
+.music-player {
+    background: var(--player-bg);
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: var(--music-shadow);
+    margin-bottom: 2rem;
+}
+
+.now-playing {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.video-container {
+    aspect-ratio: 16/9;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.track-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.track-info h2 {
+    font-size: 1.8rem;
+    color: var(--music-text);
+    margin: 0 0 0.5rem 0;
+}
+
+.track-info p {
+    color: var(--music-text-secondary);
+    margin: 0 0 1rem 0;
+}
+
+.track-stats {
+    display: flex;
+    gap: 1rem;
+    color: var(--music-text-secondary);
+    font-size: 0.9rem;
+}
+
+/* Player Controls */
+.player-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.progress-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.progress-bar {
+    height: 6px;
+    background: var(--player-progress-bg);
+    border-radius: 3px;
+    cursor: pointer;
+    position: relative;
+}
+
+.progress {
+    height: 100%;
+    background: var(--player-progress);
+    border-radius: 3px;
+    width: 0;
+    transition: width 0.1s linear;
+}
+
+.time-info {
+    display: flex;
+    justify-content: space-between;
+    color: var(--music-text-secondary);
+    font-size: 0.9rem;
+}
+
+.control-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.control-btn {
+    background: none;
+    border: none;
+    color: var(--music-text);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.control-btn:hover {
+    color: var(--music-accent);
+    background: var(--playlist-item-hover);
+}
+
+.control-btn-large {
+    font-size: 1.5rem;
+    width: 50px;
+    height: 50px;
+    background: var(--music-accent);
+    color: white;
+}
+
+.control-btn-large:hover {
+    background: var(--music-accent-hover);
+    color: white;
+    transform: scale(1.1);
+}
+
+.volume-control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    position: relative;
+}
+
+.volume-slider-container {
+    position: relative;
+    width: 100px;
+}
+
+#volumeSlider {
+    width: 100%;
+    height: 4px;
+    -webkit-appearance: none;
+    background: var(--player-progress-bg);
+    border-radius: 2px;
+    outline: none;
+}
+
+#volumeSlider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px;
+    height: 12px;
+    background: var(--music-accent);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+#volumeSlider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+.volume-tooltip {
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--player-bg);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.volume-slider-container:hover .volume-tooltip {
+    opacity: 1;
+}
+
+/* Playlist Section */
+.playlist-section {
+    background: var(--player-bg);
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: var(--music-shadow);
+}
+
+.playlist-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.playlist-title {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+}
+
+.playlist-title h3 {
+    margin: 0;
+    color: var(--music-text);
+}
+
+.playlist-title span {
+    color: var(--music-text-secondary);
+    font-size: 0.9rem;
+}
+
+.playlist-controls {
+    display: flex;
+    gap: 1rem;
+}
+
+.search-container {
+    position: relative;
+}
+
+.search-container i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--music-text-secondary);
+}
+
+#searchMusic {
+    padding: 0.8rem 1rem 0.8rem 2.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--music-border);
+    background: var(--music-bg);
+    color: var(--music-text);
+    width: 250px;
+}
+
+.playlist-sort select {
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--music-border);
+    background: var(--music-bg);
+    color: var(--music-text);
+    cursor: pointer;
+}
+
+.playlist {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+.playlist::-webkit-scrollbar {
+    width: 6px;
+}
+
+.playlist::-webkit-scrollbar-track {
+    background: var(--player-progress-bg);
+    border-radius: 3px;
+}
+
+.playlist::-webkit-scrollbar-thumb {
+    background: var(--playlist-scrollbar);
+    border-radius: 3px;
+}
+
+.playlist::-webkit-scrollbar-thumb:hover {
+    background: var(--playlist-scrollbar-hover);
+}
+
+/* YouTube Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.modal.show {
+    opacity: 1;
+    visibility: visible;
+    display: block;
+}
+
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--player-bg);
+    padding: 2rem;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: var(--music-text);
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    color: var(--music-text-secondary);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.modal-close:hover {
+    color: var(--music-text);
+}
+
+.youtube-input {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+#youtubeUrl {
+    flex: 1;
+    padding: 1rem;
+    border: 1px solid var(--music-border);
+    border-radius: 8px;
+    background: var(--music-bg);
+    color: var(--music-text);
+}
+
+.video-preview {
+    display: none;
+    grid-template-columns: auto 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: var(--music-bg);
+    border-radius: 8px;
+}
+
+.video-preview img {
+    width: 120px;
+    border-radius: 8px;
+}
+
+.video-info h4 {
+    margin: 0 0 0.5rem 0;
+    color: var(--music-text);
+}
+
+.video-info p {
+    margin: 0;
+    color: var(--music-text-secondary);
+    font-size: 0.9rem;
+}
+
+/* Mini Player */
+.mini-player {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: var(--player-bg);
+    border-radius: 12px;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: var(--music-shadow);
+    z-index: 900;
+    width: 300px;
+}
+
+#miniThumbnail {
+    width: 48px;
+    height: 48px;
+    border-radius: 6px;
+    object-fit: cover;
+}
+
+.mini-text {
+    flex: 1;
+    overflow: hidden;
+}
+
+#miniTrackTitle {
+    display: block;
+    font-weight: 500;
+    color: var(--music-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#miniArtistName {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--music-text-secondary);
+}
+
+.mini-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.mini-controls button {
+    background: none;
+    border: none;
+    color: var(--music-text);
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.mini-controls button:hover {
+    color: var(--music-accent);
+    background: var(--playlist-item-hover);
+}
+
+/* Tema Renkleri */
+:root {
+    --music-accent: #6c5ce7;
+    --music-accent-hover: #5849c2;
+    --player-bg: #ffffff;
+    --player-progress-bg: #dfe6e9;
+    --player-progress: #6c5ce7;
+    --music-text: #2d3436;
+    --music-text-secondary: #636e72;
+    --music-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    --music-border: #dfe6e9;
+    --music-bg: #f8f9fa;
+    --playlist-item-hover: #f0f0f0;
+    --playlist-scrollbar: #dfe6e9;
+    --playlist-scrollbar-hover: #c8e6c9;
+}
+
+/* Açık Tema */
+[data-theme="light"] {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8f9fa;
+    --text-primary: #2d3436;
+    --text-secondary: #636e72;
+    --border-color: #dfe6e9;
+}
+
+/* Koyu Tema */
+[data-theme="dark"] {
+    --bg-primary: #2d3436;
+    --bg-secondary: #1e272e;
+    --text-primary: #f5f6fa;
+    --text-secondary: #dcdde1;
+    --border-color: #353b48;
+}
+
+/* Doğa Teması */
+[data-theme="nature"] {
+    --accent-color: #00b894;
+    --accent-hover: #00a885;
+    --bg-primary: #f1f9f5;
+    --bg-secondary: #e8f5e9;
+    --text-primary: #2d3436;
+    --text-secondary: #636e72;
+    --border-color: #c8e6c9;
+}
+
+/* Minimal Tema */
+[data-theme="minimal"] {
+    --accent-color: #a8a8a8;
+    --accent-hover: #919191;
+    --bg-primary: #ffffff;
+    --bg-secondary: #fafafa;
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    --border-color: #eeeeee;
+}

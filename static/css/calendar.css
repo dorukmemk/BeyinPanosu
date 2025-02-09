@@ -1,0 +1,613 @@
+#calendar {
+    background: var(--bg-primary);
+    padding: 32px;
+    border-radius: 28px;
+    box-shadow: var(--shadow-lg);
+    height: calc(100vh - 140px);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-color);
+}
+
+.fc {
+    height: 100%;
+    --fc-border-color: var(--border-color);
+    --fc-button-text-color: var(--primary-color);
+    --fc-button-bg-color: var(--bg-secondary);
+    --fc-button-border-color: var(--border-color);
+    --fc-button-hover-bg-color: var(--bg-hover);
+    --fc-button-hover-border-color: var(--border-color-hover);
+    --fc-button-active-bg-color: var(--primary-color);
+    --fc-today-bg-color: var(--primary-color-alpha);
+    --fc-event-border-color: transparent;
+    --fc-event-bg-color: var(--primary-color);
+    --fc-event-text-color: var(--text-on-primary);
+    font-family: 'Inter', sans-serif;
+}
+
+.fc .fc-toolbar.fc-header-toolbar {
+    margin-bottom: 2.5em;
+    background: var(--bg-primary);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 20px;
+    padding: 24px;
+    border: 1px solid var(--border-color);
+}
+
+.fc .fc-toolbar-title {
+    font-size: 1.6em;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+}
+
+.fc .fc-button {
+    padding: 12px 24px;
+    font-weight: 500;
+    border-radius: 14px;
+    text-transform: capitalize;
+    transition: var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: none !important;
+    font-size: 0.95em;
+    letter-spacing: -0.01em;
+}
+
+.fc .fc-button:hover {
+    transform: translateY(-1px);
+}
+
+.fc .fc-button-group {
+    gap: 8px;
+    background: var(--bg-secondary);
+    padding: 6px;
+    border-radius: 16px;
+}
+
+.fc-theme-standard th {
+    padding: 16px 0;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75em;
+    color: var(--text-muted);
+    background: var(--bg-secondary);
+    letter-spacing: 0.05em;
+}
+
+.fc-daygrid-day-number {
+    font-size: 0.9em;
+    font-weight: 500;
+    color: var(--text-primary);
+    padding: 12px !important;
+    transition: color 0.2s ease;
+}
+
+.fc-daygrid-day:hover .fc-daygrid-day-number {
+    color: var(--primary-color);
+}
+
+.fc-day-today {
+    background: var(--bg-hover) !important;
+}
+
+.fc-event {
+    border: none;
+    padding: 8px 12px;
+    font-size: 0.9em;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+    margin: 2px 4px;
+    box-shadow: var(--shadow-sm);
+}
+
+.fc-event:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: var(--shadow-lg);
+}
+
+.fc-event-time {
+    font-weight: 600;
+    letter-spacing: -0.3px;
+}
+
+.fc-event-title {
+    font-weight: 500;
+    letter-spacing: -0.2px;
+}
+
+.event-work {
+    background: var(--event-work-gradient) !important;
+    border-left: none !important;
+}
+
+.event-personal {
+    background: var(--event-personal-gradient) !important;
+    border-left: none !important;
+}
+
+.event-meeting {
+    background: var(--event-meeting-gradient) !important;
+    border-left: none !important;
+}
+
+.event-deadline {
+    background: var(--event-deadline-gradient) !important;
+    border-left: none !important;
+}
+
+.priority-high {
+    box-shadow: 0 0 0 2px var(--priority-high-alpha) !important;
+}
+
+.priority-medium {
+    box-shadow: 0 0 0 2px var(--priority-medium-alpha) !important;
+}
+
+.priority-low {
+    box-shadow: 0 0 0 2px var(--priority-low-alpha) !important;
+}
+
+.fc-timegrid-slot {
+    height: 3.5em !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    background: var(--bg-primary);
+}
+
+.fc-timegrid-axis {
+    padding: 12px !important;
+    font-size: 0.85em;
+    color: var(--text-muted);
+    font-weight: 500;
+    letter-spacing: -0.2px;
+}
+
+.fc .fc-timegrid-now-indicator-line {
+    border-color: var(--primary-color);
+    border-width: 2px;
+}
+
+.fc .fc-timegrid-now-indicator-arrow {
+    border-color: var(--primary-color);
+    border-width: 5px;
+}
+
+.fc-timegrid-slot[data-time^="24"],
+.fc-timegrid-slot[data-time^="25"],
+.fc-timegrid-slot[data-time^="26"] {
+    background: var(--bg-secondary);
+}
+
+.tippy-box[data-theme~='custom'] {
+    background-color: var(--bg-primary);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-lg);
+    border-radius: 16px;
+    font-size: 0.9em;
+}
+
+.event-tooltip {
+    padding: 20px;
+    max-width: 400px;
+}
+
+.event-tooltip h3 {
+    margin: 0 0 12px 0;
+    font-size: 1.2em;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+    font-weight: 600;
+}
+
+.event-tooltip p {
+    margin: 0 0 16px 0;
+    color: var(--text-secondary);
+    font-size: 0.95em;
+    line-height: 1.6;
+}
+
+.event-meta {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.event-meta span {
+    padding: 6px 12px;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    color: var(--text-secondary);
+    font-weight: 500;
+    font-size: 0.9em;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.event-meta span i {
+    color: var(--primary-color);
+    font-size: 0.9em;
+}
+
+.delete-mode-btn {
+    margin-top: 1rem;
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: 1px solid var(--danger-color);
+    background: var(--bg-primary);
+    color: var(--danger-color);
+    cursor: pointer;
+    transition: var(--transition-speed) ease;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.delete-mode-btn.active {
+    background: var(--danger-color);
+    color: var(--text-on-danger);
+}
+
+.delete-mode-btn:hover {
+    background: var(--danger-color-hover);
+    color: var(--text-on-danger);
+}
+
+.delete-mode-btn i {
+    font-size: 16px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    backdrop-filter: blur(8px);
+}
+
+.modal-content {
+    position: relative;
+    background: var(--bg-primary);
+    margin: 2% auto;
+    padding: 0;
+    width: 90%;
+    max-width: 600px;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    max-height: 90vh;
+    overflow-y: auto;
+    border: 1px solid var(--border-color);
+}
+
+.modal-header {
+    padding: 24px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--bg-secondary);
+    border-radius: 16px 16px 0 0;
+}
+
+.event-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--primary-color);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.event-icon i {
+    font-size: 1.2em;
+}
+
+#eventTitle {
+    font-size: 1.5em !important;
+    font-weight: 600;
+    border: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+}
+
+#eventTitle:focus {
+    box-shadow: none !important;
+}
+
+.modal-body {
+    padding: 24px;
+}
+
+.property-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.property-item {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.property-label {
+    font-size: 0.9em;
+    font-weight: 600;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.property-label i {
+    color: var(--primary-color);
+}
+
+.property-value {
+    width: 100%;
+}
+
+.notion-input,
+.notion-select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 0.95em;
+    transition: all 0.2s ease;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+.notion-input:focus,
+.notion-select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px var(--primary-color-alpha);
+}
+
+.color-category-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+#eventCategory {
+    margin-bottom: 12px;
+}
+
+.color-picker {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+    gap: 12px;
+    padding: 12px;
+    background: var(--bg-primary);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.color-swatch {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 2px solid transparent;
+    position: relative;
+}
+
+.color-swatch:hover {
+    transform: scale(1.1);
+}
+
+.color-swatch.selected {
+    border-color: var(--text-primary);
+    transform: scale(1.1);
+}
+
+.color-swatch.selected::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 1.2em;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.date-time-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.date-inputs {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.date-separator {
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.all-day-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 8px 12px;
+    background: var(--bg-primary);
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.all-day-toggle:hover {
+    background: var(--bg-hover);
+}
+
+.modal-footer {
+    padding: 20px 24px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    background: var(--bg-secondary);
+    border-radius: 0 0 16px 16px;
+}
+
+.btn {
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    font-size: 0.95em;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn-danger {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: var(--danger-color-hover);
+    box-shadow: 0 4px 12px var(--danger-color-alpha);
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-color-hover);
+    box-shadow: 0 4px 12px var(--primary-color-alpha);
+}
+
+/* Özel etkinlik kategorileri için yeni renkler ve gradientler */
+.event-work {
+    background: linear-gradient(45deg, #6366f1, #818cf8) !important;
+}
+
+.event-personal {
+    background: linear-gradient(45deg, #10b981, #34d399) !important;
+}
+
+.event-meeting {
+    background: linear-gradient(45deg, #ec4899, #f472b6) !important;
+}
+
+.event-deadline {
+    background: linear-gradient(45deg, #ef4444, #f87171) !important;
+}
+
+.event-birthday {
+    background: linear-gradient(45deg, #f59e0b, #fbbf24) !important;
+}
+
+.event-holiday {
+    background: linear-gradient(45deg, #8b5cf6, #a78bfa) !important;
+}
+
+.event-other {
+    background: linear-gradient(45deg, #6b7280, #9ca3af) !important;
+}
+
+.bulk-delete-btn {
+    padding: 8px 16px;
+    background: var(--bg-primary);
+    border: 2px solid var(--danger-color);
+    color: var(--danger-color);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    margin-left: auto;
+    font-weight: bold;
+}
+
+.bulk-delete-btn.active {
+    background: var(--danger-color);
+    color: white;
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
+}
+
+.bulk-delete-btn:hover {
+    background: var(--danger-color);
+    color: white;
+    transform: translateY(-1px);
+}
+
+.bulk-delete-mode .fc-event {
+    cursor: pointer;
+    opacity: 0.7;
+    transition: all 0.2s ease;
+    border: 2px dashed var(--danger-color) !important;
+}
+
+.bulk-delete-mode .fc-event:hover {
+    opacity: 1;
+    box-shadow: 0 0 8px var(--danger-color);
+    transform: scale(1.02);
+}
+
+.bulk-delete-mode .fc-event.selected-for-delete {
+    box-shadow: 0 0 12px var(--danger-color);
+    opacity: 1;
+    position: relative;
+    background: linear-gradient(45deg, var(--danger-color), #ff6b6b) !important;
+    border: 2px solid var(--danger-color) !important;
+    color: white !important;
+}
+
+.bulk-delete-mode .fc-event.selected-for-delete::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    color: white;
+    font-weight: bold;
+    font-size: 1.2em;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.bulk-delete-mode #calendar {
+    border: 3px solid var(--danger-color);
+    box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
+}

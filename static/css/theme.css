@@ -1,0 +1,1156 @@
+/* Tema Değişkenleri - Açık Tema */
+:root {
+    /* Ana Renkler */
+    --primary-color: #7c3aed;
+    --secondary-color: #6d28d9;
+    --success-color: #10b981;
+    --danger-color: #ef4444;
+    --warning-color: #f59e0b;
+    --info-color: #06b6d4;
+
+    /* Gri Tonları */
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-400: #9ca3af;
+    --gray-500: #6b7280;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+    --gray-800: #1f2937;
+    --gray-900: #111827;
+    --gray-950: #030712;
+
+    /* Mavi Tonları */
+    --blue-50: #eff6ff;
+    --blue-100: #dbeafe;
+    --blue-200: #bfdbfe;
+    --blue-300: #93c5fd;
+    --blue-400: #60a5fa;
+    --blue-500: #3b82f6;
+    --blue-600: #2563eb;
+    --blue-700: #1d4ed8;
+    --blue-800: #1e40af;
+    --blue-900: #1e3a8a;
+    --blue-950: #172554;
+
+    /* İndigo Tonları */
+    --indigo-50: #eef2ff;
+    --indigo-100: #e0e7ff;
+    --indigo-200: #c7d2fe;
+    --indigo-300: #a5b4fc;
+    --indigo-400: #818cf8;
+    --indigo-500: #6366f1;
+    --indigo-600: #4f46e5;
+    --indigo-700: #4338ca;
+    --indigo-800: #3730a3;
+    --indigo-900: #312e81;
+    --indigo-950: #1e1b4b;
+
+    /* Yeşil Tonları */
+    --green-50: #f0fdf4;
+    --green-100: #dcfce7;
+    --green-200: #bbf7d0;
+    --green-300: #86efac;
+    --green-400: #4ade80;
+    --green-500: #22c55e;
+    --green-600: #16a34a;
+    --green-700: #15803d;
+    --green-800: #166534;
+    --green-900: #14532d;
+    --green-950: #052e16;
+
+    /* Kırmızı Tonları */
+    --red-50: #fef2f2;
+    --red-100: #fee2e2;
+    --red-200: #fecaca;
+    --red-300: #fca5a5;
+    --red-400: #f87171;
+    --red-500: #ef4444;
+    --red-600: #dc2626;
+    --red-700: #b91c1c;
+    --red-800: #991b1b;
+    --red-900: #7f1d1d;
+    --red-950: #450a0a;
+
+    /* Pembe Tonları */
+    --pink-50: #fdf2f8;
+    --pink-100: #fce7f3;
+    --pink-200: #fbcfe8;
+    --pink-300: #f9a8d4;
+    --pink-400: #f472b6;
+    --pink-500: #ec4899;
+    --pink-600: #db2777;
+    --pink-700: #be185d;
+    --pink-800: #9d174d;
+    --pink-900: #831843;
+    --pink-950: #500724;
+
+    /* Slate Tonları */
+    --slate-50: #f8fafc;
+    --slate-100: #f1f5f9;
+    --slate-200: #e2e8f0;
+    --slate-300: #cbd5e1;
+    --slate-400: #94a3b8;
+    --slate-500: #64748b;
+    --slate-600: #475569;
+    --slate-700: #334155;
+    --slate-800: #1e293b;
+    --slate-900: #0f172a;
+    --slate-950: #020617;
+
+    /* Metin Renkleri */
+    --text-primary: var(--gray-800);
+    --text-secondary: var(--gray-600);
+    --text-muted: var(--gray-500);
+    --text-light: #ffffff;
+
+    /* Arka Plan Renkleri */
+    --bg-primary: #ffffff;
+    --bg-secondary: var(--gray-100);
+    --bg-tertiary: var(--gray-200);
+    --bg-hover: var(--gray-50);
+    --bg-active: var(--gray-200);
+
+    /* Kenar Çizgisi Renkleri */
+    --border-color: var(--gray-200);
+    --border-color-hover: var(--gray-300);
+
+    /* Sidebar Renkleri */
+    --sidebar-bg: var(--gray-800);
+    --sidebar-text: #ffffff;
+    --sidebar-hover: rgba(255, 255, 255, 0.1);
+    --sidebar-active: var(--primary-color);
+
+    /* Input ve Form Elemanları */
+    --input-bg: #ffffff;
+    --input-border: var(--gray-200);
+    --input-text: var(--gray-800);
+    --input-placeholder: var(--gray-400);
+    --input-focus-border: var(--primary-color);
+    --input-focus-shadow: rgba(99, 102, 241, 0.2);
+    --input-disabled-bg: var(--gray-100);
+    --input-disabled-text: var(--gray-400);
+
+    /* Buton Renkleri */
+    --button-primary-bg: var(--primary-color);
+    --button-primary-text: #ffffff;
+    --button-primary-hover: var(--secondary-color);
+    --button-secondary-bg: var(--gray-100);
+    --button-secondary-text: var(--gray-600);
+    --button-danger-bg: var(--danger-color);
+    --button-danger-text: #ffffff;
+
+    /* Takvim Renkleri */
+    --calendar-bg: #ffffff;
+    --calendar-header-bg: var(--gray-100);
+    --calendar-border: var(--gray-200);
+    --calendar-today-bg: var(--indigo-50);
+    --calendar-event-bg: var(--primary-color);
+    --calendar-event-text: #ffffff;
+    --calendar-grid-color: var(--gray-200);
+    --calendar-weekend-bg: var(--gray-50);
+    --calendar-other-month-bg: var(--gray-50);
+    --calendar-other-month-text: var(--gray-400);
+
+    /* Modal ve Dialog */
+    --modal-bg: #ffffff;
+    --modal-overlay: rgba(0, 0, 0, 0.5);
+    --modal-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+    /* Gölgeler */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+
+    /* Geçiş Efektleri */
+    --transition-speed: 0.3s;
+
+    /* Etkinlik Kategorileri */
+    --event-work: #7c3aed;
+    --event-personal: #10b981;
+    --event-meeting: #ec4899;
+    --event-deadline: #ef4444;
+    --event-quick: #94a3b8;
+
+    /* Etkinlik Gradyanları */
+    --event-work-gradient: linear-gradient(135deg, #7c3aed, #8b5cf6);
+    --event-personal-gradient: linear-gradient(135deg, #10b981, #34d399);
+    --event-meeting-gradient: linear-gradient(135deg, #ec4899, #f472b6);
+    --event-deadline-gradient: linear-gradient(135deg, #ef4444, #f87171);
+
+    /* Öncelik Renkleri */
+    --priority-high: #ef4444;
+    --priority-medium: #f59e0b;
+    --priority-low: #10b981;
+    --priority-high-alpha: rgba(239, 68, 68, 0.3);
+    --priority-medium-alpha: rgba(245, 158, 11, 0.3);
+    --priority-low-alpha: rgba(16, 185, 129, 0.3);
+
+    /* Hover ve Active Durumları */
+    --primary-color-hover: #8b5cf6;
+    --primary-color-active: #6d28d9;
+    --primary-color-alpha: rgba(124, 58, 237, 0.1);
+
+    /* Müzik Sayfası Tema Renkleri */
+    --music-accent: var(--primary-color);
+    --music-accent-hover: var(--secondary-color);
+    --music-bg: #0f1117;
+    --music-text: #ffffff;
+    --music-text-secondary: rgba(255, 255, 255, 0.85);
+    --music-border: #1a1d24;
+    --music-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+
+    /* Player Özellikleri */
+    --player-bg: #161921;
+    --player-control-hover: #1f2937;
+    --player-progress: var(--primary-color);
+    --player-progress-bg: rgba(255, 255, 255, 0.2);
+
+    /* Playlist Özellikleri */
+    --playlist-item-hover: #1f2937;
+    --playlist-item-active: var(--primary-color);
+    --playlist-scrollbar: rgba(255, 255, 255, 0.3);
+    --playlist-scrollbar-hover: rgba(255, 255, 255, 0.5);
+}
+
+/* Koyu Tema */
+[data-theme="dark"] {
+    /* Ana Renkler */
+    --primary-color: #8b5cf6;
+    --secondary-color: #7c3aed;
+    --success-color: #34d399;
+    --danger-color: #f87171;
+    --warning-color: #fbbf24;
+    --info-color: #38bdf8;
+
+    /* Metin Renkleri */
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --text-muted: var(--slate-500);
+    --text-light: var(--slate-900);
+
+    /* Arka Plan Renkleri */
+    --bg-primary: #0f172a;
+    --bg-secondary: #1e293b;
+    --bg-tertiary: #334155;
+    --bg-hover: #1e293b;
+    --bg-active: #334155;
+
+    /* Kenar Çizgisi Renkleri */
+    --border-color: #334155;
+    --border-color-hover: #475569;
+
+    /* Sidebar ve Main Content Renkleri */
+    --sidebar-bg: #0f172a;
+    --sidebar-text: #f8fafc;
+    --sidebar-hover: #1e293b;
+    --sidebar-active: #8b5cf6;
+    --main-content-bg: var(--sidebar-bg);
+    --main-content-text: var(--sidebar-text);
+
+    /* Input ve Form Elemanları */
+    --input-bg: #1e293b;
+    --input-border: #334155;
+    --input-text: #e2e8f0;
+    --input-placeholder: #64748b;
+    --input-focus-border: var(--primary-color);
+    --input-focus-shadow: rgba(129, 140, 248, 0.2);
+    --input-disabled-bg: var(--slate-700);
+    --input-disabled-text: var(--slate-500);
+
+    /* Buton Renkleri */
+    --button-primary-bg: var(--primary-color);
+    --button-primary-text: var(--slate-900);
+    --button-primary-hover: var(--secondary-color);
+    --button-secondary-bg: var(--slate-700);
+    --button-secondary-text: var(--slate-300);
+    --button-danger-bg: var(--danger-color);
+    --button-danger-text: var(--slate-900);
+
+    /* Takvim Renkleri */
+    --calendar-bg: var(--slate-900);
+    --calendar-header-bg: var(--slate-800);
+    --calendar-border: var(--slate-700);
+    --calendar-today-bg: var(--slate-800);
+    --calendar-event-bg: var(--primary-color);
+    --calendar-event-text: var(--slate-900);
+    --calendar-grid-color: var(--slate-700);
+    --calendar-weekend-bg: var(--slate-800);
+    --calendar-other-month-bg: var(--slate-950);
+    --calendar-other-month-text: var(--slate-600);
+
+    /* Modal ve Dialog */
+    --modal-bg: var(--slate-800);
+    --modal-overlay: rgba(0, 0, 0, 0.8);
+    --modal-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+
+    /* Gölgeler */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.8);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.9);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 1);
+
+    /* Etkinlik Kategorileri */
+    --event-work: #8b5cf6;
+    --event-personal: #34d399;
+    --event-meeting: #f472b6;
+    --event-deadline: #f87171;
+    --event-quick: #94a3b8;
+
+    /* Etkinlik Gradyanları */
+    --event-work-gradient: linear-gradient(135deg, #8b5cf6, #a78bfa);
+    --event-personal-gradient: linear-gradient(135deg, #34d399, #6ee7b7);
+    --event-meeting-gradient: linear-gradient(135deg, #f472b6, #fb7185);
+    --event-deadline-gradient: linear-gradient(135deg, #f87171, #fca5a5);
+
+    /* Modal Footer */
+    .modal-footer {
+        background: var(--bg-secondary);
+        border-top: 1px solid var(--border-color);
+    }
+
+    /* Müzik Sayfası Koyu Tema */
+    --music-accent: #8b5cf6;
+    --music-accent-hover: #7c3aed;
+    --music-bg: #0f172a;
+    --music-text: #f8fafc;
+    --music-text-secondary: #94a3b8;
+    --music-border: #1e293b;
+    --music-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+
+    /* Player Özellikleri - Koyu Tema */
+    --player-bg: #1e293b;
+    --player-control-hover: #334155;
+    --player-progress: #8b5cf6;
+    --player-progress-bg: rgba(148, 163, 184, 0.2);
+    --player-button: #f8fafc;
+    --player-button-hover: #8b5cf6;
+
+    /* Playlist Özellikleri - Koyu Tema */
+    --playlist-bg: #1e293b;
+    --playlist-item-hover: #334155;
+    --playlist-item-active: #8b5cf6;
+    --playlist-text: #f8fafc;
+    --playlist-text-secondary: #94a3b8;
+    --playlist-border: #334155;
+    --playlist-scrollbar: #475569;
+    --playlist-scrollbar-hover: #64748b;
+
+    /* Mini Player */
+    --mini-player-bg: #1e293b;
+    --mini-player-text: #f8fafc;
+    --mini-player-button: #f8fafc;
+    --mini-player-button-hover: #8b5cf6;
+    --mini-player-border: #334155;
+}
+
+/* Genel Stil Uygulamaları */
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: all var(--transition-speed) ease;
+}
+
+/* Takvim Özelleştirmeleri */
+.fc {
+    background-color: var(--calendar-bg);
+    border-color: var(--calendar-border) !important;
+}
+
+.fc-theme-standard td,
+.fc-theme-standard th {
+    border-color: var(--calendar-grid-color) !important;
+}
+
+.fc-theme-standard .fc-scrollgrid {
+    border-color: var(--calendar-border) !important;
+}
+
+.fc-day-today {
+    background-color: var(--calendar-today-bg) !important;
+}
+
+.fc-day-other {
+    background-color: var(--calendar-other-month-bg) !important;
+    color: var(--calendar-other-month-text) !important;
+}
+
+.fc-toolbar-title,
+.fc-col-header-cell-cushion,
+.fc-daygrid-day-number {
+    color: var(--text-primary) !important;
+}
+
+.fc-button-primary {
+    background-color: var(--button-primary-bg) !important;
+    border-color: var(--button-primary-bg) !important;
+    color: var(--button-primary-text) !important;
+}
+
+.fc-button-primary:hover {
+    background-color: var(--button-primary-hover) !important;
+    border-color: var(--button-primary-hover) !important;
+}
+
+/* Modal Özelleştirmeleri */
+.modal {
+    background-color: var(--modal-overlay);
+}
+
+.modal-content {
+    background-color: var(--modal-bg);
+    border-color: var(--border-color);
+    box-shadow: var(--modal-shadow);
+}
+
+/* Form Elemanları */
+input,
+select,
+textarea {
+    background-color: var(--input-bg);
+    border-color: var(--input-border);
+    color: var(--input-text);
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: var(--input-placeholder);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--input-focus-border);
+    box-shadow: 0 0 0 2px var(--input-focus-shadow);
+}
+
+/* Butonlar */
+.btn {
+    transition: all var(--transition-speed) ease;
+}
+
+.btn-primary {
+    background-color: var(--button-primary-bg);
+    color: var(--button-primary-text);
+}
+
+.btn-secondary {
+    background-color: var(--button-secondary-bg);
+    color: var(--button-secondary-text);
+}
+
+.btn-danger {
+    background-color: var(--button-danger-bg);
+    color: var(--button-danger-text);
+}
+
+/* Quick Add Input */
+.quick-add input {
+    background-color: var(--input-bg);
+    border-color: var(--input-border);
+    color: var(--input-text);
+}
+
+/* Search Bar */
+.search-bar {
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+}
+
+.search-bar input {
+    color: var(--text-primary);
+}
+
+.search-bar i {
+    color: var(--text-secondary);
+}
+
+/* User Menu */
+.user-menu {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+}
+
+/* Top Bar */
+.top-bar {
+    background-color: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Settings Sections */
+.settings-section {
+    background-color: var(--bg-secondary);
+    border-color: var(--border-color);
+}
+
+.section-title {
+    color: var(--text-primary);
+    border-bottom-color: var(--border-color);
+}
+
+/* Color Palette */
+.color-palette {
+    background-color: var(--bg-secondary);
+    border-color: var(--border-color);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--text-muted);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+}
+
+/* Tooltip */
+.tippy-box {
+    background-color: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--border-color) !important;
+}
+
+/* Event Categories */
+.event-work {
+    background-color: var(--event-work) !important;
+}
+
+.event-personal {
+    background-color: var(--event-personal) !important;
+}
+
+.event-meeting {
+    background-color: var(--event-meeting) !important;
+}
+
+.event-deadline {
+    background-color: var(--event-deadline) !important;
+}
+
+.event-quick {
+    background-color: var(--event-quick) !important;
+}
+
+/* Markdown Editor */
+.markdown-editor {
+    background-color: var(--bg-secondary);
+    border-color: var(--border-color);
+}
+
+.editor-tabs {
+    background-color: var(--bg-tertiary);
+    border-bottom-color: var(--border-color);
+}
+
+.tab-btn {
+    color: var(--text-secondary);
+}
+
+.tab-btn.active {
+    color: var(--text-primary);
+    background-color: var(--bg-secondary);
+}
+
+/* Property List */
+.property-list {
+    border-color: var(--border-color);
+}
+
+.property-item {
+    border-bottom-color: var(--border-color);
+}
+
+.property-label {
+    color: var(--text-secondary);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.fade-in {
+    animation: fadeIn var(--transition-speed) ease;
+}
+
+/* Takvim Özelleştirmeleri - Koyu Tema İçin Ek Stiller */
+[data-theme="dark"] .fc {
+    border: 1px solid var(--calendar-border);
+}
+
+[data-theme="dark"] .fc-day {
+    background-color: var(--calendar-bg) !important;
+}
+
+[data-theme="dark"] .fc-day-sat,
+[data-theme="dark"] .fc-day-sun {
+    background-color: var(--calendar-weekend-bg) !important;
+}
+
+[data-theme="dark"] .fc-day-number {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .fc-list-item:hover td {
+    background-color: var(--bg-hover) !important;
+}
+
+[data-theme="dark"] .fc-list-empty {
+    background-color: var(--bg-secondary) !important;
+}
+
+[data-theme="dark"] .fc-toolbar button {
+    background-color: var(--button-secondary-bg) !important;
+    border-color: var(--button-secondary-bg) !important;
+    color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .fc-toolbar button:hover {
+    background-color: var(--bg-active) !important;
+    border-color: var(--bg-active) !important;
+}
+
+[data-theme="dark"] .fc-toolbar-title {
+    color: var(--text-primary) !important;
+}
+
+/* Quick Add Input - Koyu Tema İçin Ek Stiller */
+[data-theme="dark"] .quick-add input {
+    background-color: var(--bg-secondary);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+/* Search Bar - Koyu Tema İçin Ek Stiller */
+[data-theme="dark"] .search-bar {
+    background-color: var(--bg-secondary);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .search-bar input {
+    color: var(--text-primary);
+}
+
+/* Modal - Koyu Tema İçin Ek Stiller */
+[data-theme="dark"] .modal-content {
+    background-color: var(--modal-bg);
+    border: 1px solid var(--border-color);
+}
+
+[data-theme="dark"] .modal-header {
+    border-bottom-color: var(--border-color);
+}
+
+[data-theme="dark"] .modal-footer {
+    border-top-color: var(--border-color);
+}
+
+/* Event Categories - Koyu Tema İçin Ek Stiller */
+[data-theme="dark"] .event-work {
+    background-color: #818cf8 !important;
+    color: #0f172a !important;
+}
+
+[data-theme="dark"] .event-personal {
+    background-color: #34d399 !important;
+    color: #0f172a !important;
+}
+
+[data-theme="dark"] .event-meeting {
+    background-color: #f472b6 !important;
+    color: #0f172a !important;
+}
+
+[data-theme="dark"] .event-deadline {
+    background-color: #f87171 !important;
+    color: #0f172a !important;
+}
+
+[data-theme="dark"] .event-quick {
+    background-color: #94a3b8 !important;
+    color: #0f172a !important;
+}
+
+/* Markdown Editor - Koyu Tema İçin Ek Stiller */
+[data-theme="dark"] .markdown-editor {
+    background-color: var(--bg-secondary);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .editor-tabs {
+    background-color: var(--bg-tertiary);
+}
+
+[data-theme="dark"] .preview-tab {
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+/* Scrollbar - Koyu Tema İçin Ek Stiller */
+[data-theme="dark"] ::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+    background: var(--bg-tertiary);
+    border: 2px solid var(--bg-secondary);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+    background: var(--bg-active);
+}
+
+/* Modal Footer - Genel */
+.modal-footer {
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: var(--transition-speed) ease;
+}
+
+/* Tema Önizlemeleri */
+.theme-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.theme-btn {
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    transition: transform 0.2s;
+    background: none;
+}
+
+.theme-btn:hover {
+    transform: scale(1.05);
+}
+
+.theme-btn.active {
+    outline: 3px solid var(--primary-color);
+}
+
+.theme-preview {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    position: relative;
+    border-radius: 0.5rem;
+}
+
+.theme-preview span {
+    color: inherit;
+    font-size: 0.875rem;
+    text-align: center;
+    z-index: 1;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Temel Temalar */
+.theme-preview[data-theme="dark-minimal"] {
+    background-color: #1a1a1a !important;
+    color: #ffffff !important;
+}
+
+.theme-preview[data-theme="light-minimal"] {
+    background-color: #f5f5f5 !important;
+    color: #333333 !important;
+}
+
+.theme-preview[data-theme="modern-dark"] {
+    background-color: #1f2937 !important;
+    color: #f3f4f6 !important;
+}
+
+.theme-preview[data-theme="modern-light"] {
+    background-color: #f3f4f6 !important;
+    color: #1f2937 !important;
+}
+
+/* Gradyan Temalar */
+.theme-preview[data-theme="night-sky"] {
+    background-image: linear-gradient(45deg, #0f2027, #203a43, #2c5364) !important;
+    background-color: #0f2027 !important;
+    color: #e0e0e0 !important;
+}
+
+.theme-preview[data-theme="midnight-bloom"] {
+    background-image: linear-gradient(to right, #0f172a, #1e293b) !important;
+    background-color: #0f172a !important;
+    color: #e2e8f0 !important;
+}
+
+.theme-preview[data-theme="deep-space"] {
+    background-image: linear-gradient(to right, #0a192f, #112240, #1a365d) !important;
+    background-color: #0a192f !important;
+    color: #64ffda !important;
+}
+
+.theme-preview[data-theme="nordic-frost"] {
+    background-image: linear-gradient(45deg, #E5E9F0, #ECEFF4) !important;
+    background-color: #E5E9F0 !important;
+    color: #2E3440 !important;
+}
+
+.theme-preview[data-theme="pastel-dream"] {
+    background-image: linear-gradient(45deg, #ffd1dc, #b8e1ff) !important;
+    background-color: #ffd1dc !important;
+    color: #4a5568 !important;
+}
+
+.theme-preview[data-theme="cherry-blossom"] {
+    background-image: linear-gradient(45deg, #ffd6e0, #ffb6c1) !important;
+    background-color: #ffd6e0 !important;
+    color: #800020 !important;
+}
+
+.theme-preview[data-theme="bamboo-forest"] {
+    background-image: linear-gradient(to right, #d4e4bc, #96b85c) !important;
+    background-color: #d4e4bc !important;
+    color: #2d3a12 !important;
+}
+
+.theme-preview[data-theme="autumn-breeze"] {
+    background-image: linear-gradient(45deg, #f9b17a, #f7ce68) !important;
+    background-color: #f9b17a !important;
+    color: #7c2d12 !important;
+}
+
+.theme-preview[data-theme="desert-night"] {
+    background-image: linear-gradient(45deg, #451952, #662549, #AE445A) !important;
+    background-color: #451952 !important;
+    color: #F39F5A !important;
+}
+
+.theme-preview[data-theme="neon-city"] {
+    background-image: linear-gradient(to right, #2a0e61, #ff1361) !important;
+    background-color: #2a0e61 !important;
+    color: #00fff5 !important;
+}
+
+.theme-preview[data-theme="sunset-gradient"] {
+    background-image: linear-gradient(45deg, #ff512f, #dd2476) !important;
+    background-color: #ff512f !important;
+    color: #ffffff !important;
+}
+
+.theme-preview[data-theme="purple-haze"] {
+    background-image: linear-gradient(45deg, #4a154b, #9333ea) !important;
+    background-color: #4a154b !important;
+    color: #e879f9 !important;
+}
+
+.theme-preview[data-theme="emerald-city"] {
+    background-image: linear-gradient(45deg, #064e3b, #059669) !important;
+    background-color: #064e3b !important;
+    color: #34d399 !important;
+}
+
+.theme-preview[data-theme="golden-hour"] {
+    background-image: linear-gradient(45deg, #92400e, #b45309) !important;
+    background-color: #92400e !important;
+    color: #fbbf24 !important;
+}
+
+.theme-preview[data-theme="arctic-aurora"] {
+    background-image: linear-gradient(45deg, #1e293b, #334155) !important;
+    background-color: #1e293b !important;
+    color: #38bdf8 !important;
+}
+
+/* Özel Efektli Temalar */
+.theme-preview[data-theme="cyber"] {
+    background-image: linear-gradient(45deg, #000428, #004e92) !important;
+    background-color: #000428 !important;
+    color: #00ff00 !important;
+    text-shadow: 0 0 5px #00ff00 !important;
+}
+
+.theme-preview[data-theme="retro"] {
+    background-image: linear-gradient(45deg, #c31432, #240b36) !important;
+    background-color: #c31432 !important;
+    color: #ff00ff !important;
+    text-shadow: 0 0 5px #ff00ff !important;
+}
+
+.theme-preview[data-theme="matrix"] {
+    background-color: #000000 !important;
+    color: #39ff14 !important;
+    text-shadow: 0 0 5px #39ff14 !important;
+}
+
+.theme-preview[data-theme="synthwave"] {
+    background-image: linear-gradient(45deg, #241734, #2a1f3d, #31274a) !important;
+    background-color: #241734 !important;
+    color: #ff00ff !important;
+}
+
+/* Desenli Temalar */
+.theme-preview[data-theme="minimal-dots"] {
+    background-color: #1a1a1a !important;
+    color: #ffffff !important;
+}
+
+.theme-preview[data-theme="light-dots"] {
+    background-color: #ffffff !important;
+    color: #2c3e50 !important;
+}
+
+.theme-preview[data-theme="minimal-grid"] {
+    background-color: #1a1a1a !important;
+    color: #ffffff !important;
+}
+
+.theme-preview[data-theme="light-grid"] {
+    background-color: #ffffff !important;
+    color: #2c3e50 !important;
+}
+
+.theme-preview[data-theme="tech-lines"] {
+    background-color: #0f172a !important;
+    color: #38bdf8 !important;
+}
+
+.theme-preview[data-theme="ocean-waves"] {
+    background-color: #134e5e !important;
+    color: #ffffff !important;
+}
+
+.theme-preview[data-theme="midnight-oil"] {
+    background-color: #18181b !important;
+    color: #d4d4d8 !important;
+}
+
+/* Desenli Tema Efektleri */
+.theme-preview[data-theme="minimal-dots"]::after,
+.theme-preview[data-theme="light-dots"]::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: radial-gradient(currentColor 1px, transparent 1px);
+    background-size: 10px 10px;
+    opacity: 0.2;
+}
+
+.theme-preview[data-theme="minimal-grid"]::after,
+.theme-preview[data-theme="light-grid"]::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+        linear-gradient(to right, currentColor 1px, transparent 1px),
+        linear-gradient(to bottom, currentColor 1px, transparent 1px);
+    background-size: 10px 10px;
+    opacity: 0.2;
+}
+
+.theme-preview[data-theme="tech-lines"]::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: linear-gradient(45deg, currentColor 1px, transparent 1px);
+    background-size: 20px 20px;
+    opacity: 0.2;
+}
+
+.theme-preview[data-theme="ocean-waves"]::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+        radial-gradient(circle at 100% 50%, transparent 20%, currentColor 21%, currentColor 34%, transparent 35%, transparent),
+        radial-gradient(circle at 0% 50%, transparent 20%, currentColor 21%, currentColor 34%, transparent 35%, transparent);
+    background-size: 40px 40px;
+    opacity: 0.2;
+}
+
+.theme-preview[data-theme="synthwave"]::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(to bottom,
+            transparent 0%,
+            rgba(255, 0, 255, 0.1) 1px,
+            transparent 2px);
+    pointer-events: none;
+}
+
+/* Main Content Özelleştirmeleri */
+.main-content {
+    background-color: var(--main-content-bg);
+    color: var(--main-content-text);
+}
+
+.top-bar {
+    background-color: var(--main-content-bg);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.search-bar {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+}
+
+.search-bar input {
+    color: var(--main-content-text);
+    background-color: transparent;
+}
+
+.search-bar i {
+    color: var(--text-secondary);
+}
+
+.user-menu {
+    background-color: var(--bg-secondary);
+    color: var(--main-content-text);
+}
+
+/* Müzik Container */
+.music-container {
+    background-color: var(--music-bg);
+    color: var(--music-text);
+}
+
+/* Müzik Player */
+.music-player {
+    background-color: var(--player-bg);
+    border: 1px solid var(--music-border);
+    box-shadow: var(--music-shadow);
+}
+
+.player-controls button {
+    color: var(--player-button);
+}
+
+.player-controls button:hover {
+    color: var(--player-button-hover);
+    background-color: var(--player-control-hover);
+}
+
+.progress-bar {
+    background-color: var(--player-progress-bg);
+}
+
+.progress {
+    background-color: var(--player-progress);
+}
+
+/* Playlist */
+.playlist-section {
+    background-color: var(--playlist-bg);
+    border: 1px solid var(--playlist-border);
+}
+
+.playlist-item {
+    border-bottom: 1px solid var(--playlist-border);
+    color: var(--playlist-text);
+}
+
+.playlist-item:hover {
+    background-color: var(--playlist-item-hover);
+}
+
+.playlist-item.active {
+    background-color: var(--playlist-item-active);
+    color: var(--music-text);
+}
+
+.playlist-item-info span {
+    color: var(--playlist-text-secondary);
+}
+
+/* Mini Player */
+.mini-player {
+    background-color: var(--mini-player-bg);
+    border: 1px solid var(--mini-player-border);
+    color: var(--mini-player-text);
+}
+
+.mini-player button {
+    color: var(--mini-player-button);
+}
+
+.mini-player button:hover {
+    color: var(--mini-player-button-hover);
+    background-color: var(--player-control-hover);
+}
+
+/* Volume Control */
+.volume-slider-container input[type="range"] {
+    background-color: var(--player-progress-bg);
+}
+
+.volume-slider-container input[type="range"]::-webkit-slider-thumb {
+    background-color: var(--player-progress);
+}
+
+/* Search ve Input Alanları */
+.playlist-controls input,
+.playlist-controls select {
+    background-color: var(--music-bg);
+    border: 1px solid var(--music-border);
+    color: var(--music-text);
+}
+
+.playlist-controls input::placeholder {
+    color: var(--music-text-secondary);
+}
+
+/* Scrollbar */
+.playlist::-webkit-scrollbar {
+    width: 6px;
+}
+
+.playlist::-webkit-scrollbar-track {
+    background: var(--player-bg);
+}
+
+.playlist::-webkit-scrollbar-thumb {
+    background: var(--playlist-scrollbar);
+    border-radius: 3px;
+}
+
+.playlist::-webkit-scrollbar-thumb:hover {
+    background: var(--playlist-scrollbar-hover);
+}

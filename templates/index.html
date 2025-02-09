@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Planlayıcı</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sidebar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/calendar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+    {% block extra_css %}{% endblock %}
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Full Calendar -->
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/main.min.css' rel='stylesheet' />
+
+    <!-- Tippy.js for Tooltips -->
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+
+    <!-- Add Marked library for Markdown support -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Ana Container -->
+    <div class="container">
+        <!-- Sidebar şablonunu dahil et -->
+        {% include 'sidebar.html' %}
+
+        <!-- Ana İçerik -->
+        <div class="main-content">
+            <div class="top-bar">
+                <button id="toggleSidebar"><i class="fas fa-bars"></i></button>
+                <div class="search-bar">
+                    <input type="text" placeholder="Arama...">
+                    <i class="fas fa-search"></i>
+                </div>
+                <button id="bulkDeleteBtn" class="bulk-delete-btn">
+                    <i class="fas fa-trash"></i> Toplu Sil
+                </button>
+            </div>
+
+            {% block content %}
+            <!-- Takvim Container -->
+            <div id="calendar"></div>
+
+            <!-- Enhanced Event Modal -->
+            <div id="eventModal" class="modal">
+                <div class="modal-content">
+                    <button class="modal-close" onclick="closeModal()">
+                        <i class="fas fa-times"></i>
+                    </button>
+
+                    <form id="eventForm">
+                        <div class="modal-header">
+                            <div class="event-icon">
+                                <i class="fas fa-calendar"></i>
+                            </div>
+                            <input type="text" id="eventTitle" class="notion-input" placeholder="Etkinlik başlığı..."
+                                style="font-size: 1.5em;">
+                        </div>
+
+                        <div class="modal-body">
+                            <ul class="property-list">
+                                <li class="property-item">
+                                    <div class="property-label">
+                                        <i class="fas fa-palette"></i> Renk ve Kategori
+                                    </div>
+                                    <div class="property-value">
+                                        <div class="color-category-wrapper">
+                                            <select id="eventCategory" class="notion-select">
+                                                <option value="event-work">🏢 İş</option>
+                                                <option value="event-personal">👤 Kişisel</option>
+                                                <option value="event-meeting">👥 Toplantı</option>
+                                                <option value="event-deadline">⏰ Son Tarih</option>
+                                                <option value="event-birthday">🎂 Doğum Günü</option>
+                                                <option value="event-holiday">🌴 Tatil</option>
+                                                <option value="event-other">📌 Diğer</option>
+                                            </select>
+                                            <div class="color-picker">
+                                                <div class="color-swatch selected" style="background: #6366f1;"
+                                                    data-color="#6366f1"></div>
+                                                <div class="color-swatch" style="background: #10b981;"
+                                                    data-color="#10b981"></div>
+                                                <div class="color-swatch" style="background: #ec4899;"
+                                                    data-color="#ec4899"></div>
+                                                <div class="color-swatch" style="background: #ef4444;"
+                                                    data-color="#ef4444"></div>
+                                                <div class="color-swatch" style="background: #f59e0b;"
+                                                    data-color="#f59e0b"></div>
+                                                <div class="color-swatch" style="background: #8b5cf6;"
+                                                    data-color="#8b5cf6"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li class="property-item">
+                                    <div class="property-label">
+                                        <i class="fas fa-clock"></i> Tarih ve Saat
+                                    </div>
+                                    <div class="property-value date-time-wrapper">
+                                        <div class="date-inputs">
+                                            <input type="datetime-local" id="eventStart" class="notion-input">
+                                            <span class="date-separator">→</span>
+                                            <input type="datetime-local" id="eventEnd" class="notion-input">
+                                        </div>
+                                        <label class="all-day-toggle">
+                                            <input type="checkbox" id="eventAllDay">
+                                            <span>Tüm gün</span>
+                                        </label>
+                                    </div>
+                                </li>
+
+                                <li class="property-item">
+                                    <div class="property-label">
+                                        <i class="fas fa-align-left"></i> Açıklama
+                                    </div>
+                                    <div class="property-value">
+                                        <textarea id="eventDescription" class="notion-input"
+                                            placeholder="Etkinlik detaylarını buraya yazın..."></textarea>
+                                    </div>
+                                </li>
+
+                                <li class="property-item">
+                                    <div class="property-label">
+                                        <i class="fas fa-flag"></i> Öncelik
+                                    </div>
+                                    <div class="property-value">
+                                        <select id="eventPriority" class="notion-select">
+                                            <option value="low">🔽 Düşük</option>
+                                            <option value="medium" selected>➡️ Normal</option>
+                                            <option value="high">🔼 Yüksek</option>
+                                            <option value="urgent">⚠️ Acil</option>
+                                        </select>
+                                    </div>
+                                </li>
+
+                                <li class="property-item">
+                                    <div class="property-label">
+                                        <i class="fas fa-redo"></i> Tekrar
+                                    </div>
+                                    <div class="property-value">
+                                        <select id="eventRecurring" class="notion-select">
+                                            <option value="none">Tekrar Yok</option>
+                                            <option value="daily">Her Gün</option>
+                                            <option value="weekly">Her Hafta</option>
+                                            <option value="monthly">Her Ay</option>
+                                            <option value="yearly">Her Yıl</option>
+                                            <option value="custom">Özel</option>
+                                        </select>
+                                    </div>
+                                </li>
+
+                                <li class="property-item">
+                                    <div class="property-label">
+                                        <i class="fas fa-bell"></i> Hatırlatıcı
+                                    </div>
+                                    <div class="property-value">
+                                        <select id="eventReminder" class="notion-select">
+                                            <option value="none">Hatırlatma Yok</option>
+                                            <option value="0">Tam zamanında</option>
+                                            <option value="5">5 dakika önce</option>
+                                            <option value="15">15 dakika önce</option>
+                                            <option value="30" selected>30 dakika önce</option>
+                                            <option value="60">1 saat önce</option>
+                                            <option value="1440">1 gün önce</option>
+                                        </select>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" id="deleteEventBtn" class="btn btn-danger">
+                                <i class="fas fa-trash"></i> Sil
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Quick Event Add -->
+            <div class="quick-add">
+                <input type="text" id="quickEventInput"
+                    placeholder="Hızlı etkinlik ekle (örn: 'John ile toplantı yarın 14:00-15:00')">
+            </div>
+            {% endblock %}
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='js/calendar/index.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+
+</html>

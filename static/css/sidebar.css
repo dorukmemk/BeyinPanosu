@@ -1,0 +1,118 @@
+.sidebar {
+    width: 80px;
+    background: var(--sidebar-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: var(--text-muted);
+    padding: 25px 0;
+    transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+    position: fixed;
+    height: 100%;
+    left: 0;
+    top: 0;
+    z-index: 100;
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+    width: 100%;
+}
+
+.sidebar-header .fa-calendar-alt {
+    font-size: 1.8em;
+    color: var(--primary-color);
+}
+
+.sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+    width: 100%;
+}
+
+.sidebar-menu a {
+    text-decoration: none;
+    color: var(--text-muted);
+    width: 45px;
+    height: 45px;
+    border-radius: 12px;
+    transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin: 5px 0;
+}
+
+.sidebar-menu a:hover {
+    color: var(--primary-color);
+    background: var(--sidebar-hover);
+    transform: translateY(-1px);
+}
+
+.sidebar-menu a.active {
+    color: var(--primary-color);
+    background: var(--sidebar-hover);
+}
+
+.sidebar-menu a::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 70px;
+    padding: 8px 12px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    font-size: 0.75rem;
+    border-radius: 8px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid var(--border-color);
+}
+
+.sidebar-menu a:hover::before {
+    opacity: 1;
+    visibility: visible;
+}
+
+.sidebar-menu i {
+    font-size: 1.2em;
+}
+
+.sidebar.closed {
+    transform: translateX(-100%);
+}
+
+.sidebar-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+    width: 100%;
+}
+
+.sidebar-header h2 {
+    font-size: 1.5em;
+    color: var(--primary-color);
+}
+
+#closeSidebar {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 60px;
+    }
+}
