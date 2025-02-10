@@ -1,5 +1,5 @@
 # Beyin Panosu
-Zaman yönetimi ve verimlilik için geliştirilmiş bir web uygulaması.
+Zaman yönetimi ve verimlilik için geliştirilmiş bir web uygulaması. Bu proje çoğunlukla yapay zeka araçları kullanılarak geliştirilmektedir! 
 
 ## Özellikler
 
