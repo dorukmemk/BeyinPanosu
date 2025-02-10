@@ -21,7 +21,7 @@
     --fc-today-bg-color: var(--primary-color-alpha);
     --fc-event-border-color: transparent;
     --fc-event-bg-color: var(--primary-color);
-    --fc-event-text-color: var(--text-on-primary);
+    --fc-event-text-color: #ffffff;
     font-family: 'Inter', sans-serif;
 }
 
@@ -109,11 +109,13 @@
 .fc-event-time {
     font-weight: 600;
     letter-spacing: -0.3px;
+    color: rgba(255, 255, 255, 0.95);
 }
 
 .fc-event-title {
     font-weight: 500;
     letter-spacing: -0.2px;
+    color: rgba(255, 255, 255, 0.95);
 }
 
 .event-work {
@@ -610,4 +612,153 @@
 .bulk-delete-mode #calendar {
     border: 3px solid var(--danger-color);
     box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
+}
+
+/* Etkinlik Durumu Stilleri */
+.event-status-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    margin-right: 6px;
+    border-radius: 50%;
+    font-size: 12px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(4px);
+}
+
+.status-completed {
+    color: #10b981;
+    background: rgba(16, 185, 129, 0.1);
+}
+
+.status-in-progress {
+    color: #3b82f6;
+    background: rgba(59, 130, 246, 0.1);
+    animation: spin 2s linear infinite;
+}
+
+.status-pending {
+    color: #f59e0b;
+    background: rgba(245, 158, 11, 0.1);
+}
+
+.status-cancelled {
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Durum seçici stilleri */
+#eventStatus.notion-select {
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+#eventStatus.notion-select option {
+    padding: 12px;
+    font-weight: 500;
+}
+
+/* Durum seçenekleri için özel stiller */
+#eventStatus.notion-select option[value="pending"] {
+    background-color: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+}
+
+#eventStatus.notion-select option[value="in-progress"] {
+    background-color: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
+}
+
+#eventStatus.notion-select option[value="completed"] {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+#eventStatus.notion-select option[value="cancelled"] {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+}
+
+/* Durum simgeleri için stiller */
+.event-status-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    border-radius: 50%;
+    font-size: 12px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(4px);
+}
+
+.status-completed {
+    color: #10b981;
+    background: rgba(16, 185, 129, 0.1);
+}
+
+.status-in-progress {
+    color: #3b82f6;
+    background: rgba(59, 130, 246, 0.1);
+    animation: spin 2s linear infinite;
+}
+
+.status-pending {
+    color: #f59e0b;
+    background: rgba(245, 158, 11, 0.1);
+}
+
+.status-cancelled {
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Etkinlik durumuna göre görünüm */
+.fc-event[data-status="completed"] {
+    opacity: 0.7;
+}
+
+.fc-event[data-status="cancelled"] {
+    opacity: 0.5;
+    text-decoration: line-through;
+}
+
+/* Durum seçici hover efekti */
+#eventStatus.notion-select:hover {
+    border-color: var(--primary-color);
+}
+
+#eventStatus.notion-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px var(--primary-color-alpha);
+}
+
+/* Etkinlik opacity geçişleri */
+.fc-event {
+    transition: opacity 0.3s, text-decoration 0.3s;
 }

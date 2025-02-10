@@ -90,6 +90,62 @@ export class CalendarApp {
         const form = document.getElementById('eventForm');
         if (!form) return;
 
+        // Durum değişikliği için listener
+        const statusSelect = form.querySelector('#eventStatus');
+        if (statusSelect) {
+            statusSelect.addEventListener('change', async (e) => {
+                if (this.activeEventId) {
+                    const event = this.calendar.getEventById(this.activeEventId);
+                    if (event) {
+                        const status = e.target.value;
+                        event.setExtendedProp('status', status);
+
+                        // Mevcut durum simgesini kaldır
+                        const eventEl = event.el;
+                        if (eventEl) {
+                            const oldIcon = eventEl.querySelector('.event-status-icon');
+                            if (oldIcon) oldIcon.remove();
+
+                            // Yeni durum simgesini ekle
+                            const statusIcon = document.createElement('span');
+                            statusIcon.className = `event-status-icon status-${status}`;
+
+                            switch (status) {
+                                case 'completed':
+                                    statusIcon.innerHTML = '✓';
+                                    statusIcon.title = 'Tamamlandı';
+                                    eventEl.style.opacity = '0.7';
+                                    break;
+                                case 'in-progress':
+                                    statusIcon.innerHTML = '⟳';
+                                    statusIcon.title = 'Devam Ediyor';
+                                    eventEl.style.opacity = '1';
+                                    break;
+                                case 'pending':
+                                    statusIcon.innerHTML = '⌛';
+                                    statusIcon.title = 'Beklemede';
+                                    eventEl.style.opacity = '1';
+                                    break;
+                                case 'cancelled':
+                                    statusIcon.innerHTML = '✕';
+                                    statusIcon.title = 'İptal Edildi';
+                                    eventEl.style.opacity = '0.5';
+                                    eventEl.style.textDecoration = 'line-through';
+                                    break;
+                            }
+
+                            const titleEl = eventEl.querySelector('.fc-event-title');
+                            if (titleEl) {
+                                titleEl.insertBefore(statusIcon, titleEl.firstChild);
+                            }
+                        }
+
+                        await this.saveFormChanges();
+                    }
+                }
+            });
+        }
+
         // Renk seçici işlevselliği
         const colorPicker = form.querySelector('.color-picker');
         if (colorPicker) {
@@ -110,6 +166,20 @@ export class CalendarApp {
                             event.setProp('borderColor', color);
                             await this.saveFormChanges();
                         }
+                    }
+                }
+            });
+        }
+
+        // Tüm gün seçeneği için listener
+        const allDayCheckbox = form.querySelector('#eventAllDay');
+        if (allDayCheckbox) {
+            allDayCheckbox.addEventListener('change', async (e) => {
+                if (this.activeEventId) {
+                    const event = this.calendar.getEventById(this.activeEventId);
+                    if (event) {
+                        event.setAllDay(e.target.checked);
+                        await this.saveFormChanges();
                     }
                 }
             });
@@ -151,8 +221,32 @@ export class CalendarApp {
 
             const selectedColor = form.querySelector('.color-swatch.selected')?.getAttribute('data-color');
             const recurring = form.querySelector('#eventRecurring').value;
-            const startDate = new Date(form.querySelector('#eventStart').value);
-            const endDate = new Date(form.querySelector('#eventEnd').value);
+            const startInput = form.querySelector('#eventStart').value;
+            const endInput = form.querySelector('#eventEnd').value;
+            const isAllDay = form.querySelector('#eventAllDay').checked;
+            const status = form.querySelector('#eventStatus').value;
+
+            // Tarihleri düzgün şekilde ayarla
+            let startDate = new Date(startInput);
+            let endDate = new Date(endInput);
+
+            // Tüm gün etkinliği için tarih düzenlemesi
+            if (isAllDay) {
+                // Yerel saat diliminde tarihleri ayarla
+                startDate = new Date(
+                    startDate.getFullYear(),
+                    startDate.getMonth(),
+                    startDate.getDate(),
+                    0, 0, 0
+                );
+
+                endDate = new Date(
+                    endDate.getFullYear(),
+                    endDate.getMonth(),
+                    endDate.getDate(),
+                    23, 59, 59
+                );
+            }
 
             // Ana etkinlik verilerini hazırla
             const baseEvent = {
@@ -160,7 +254,7 @@ export class CalendarApp {
                 title: form.querySelector('#eventTitle').value || 'Untitled',
                 start: startDate,
                 end: endDate,
-                allDay: form.querySelector('#eventAllDay').checked,
+                allDay: isAllDay,
                 className: [form.querySelector('#eventCategory').value],
                 backgroundColor: selectedColor || '#6366f1',
                 borderColor: selectedColor || '#6366f1',
@@ -171,13 +265,14 @@ export class CalendarApp {
                     reminder: form.querySelector('#eventReminder').value || '30',
                     isRecurring: false,
                     recurringDays: [],
-                    category: form.querySelector('#eventCategory').value
+                    category: form.querySelector('#eventCategory').value,
+                    status: status || 'pending'
                 }
             };
 
             // Mevcut etkinliği güncelle
             event.setProp('title', baseEvent.title);
-            event.setProp('allDay', baseEvent.allDay);
+            event.setAllDay(baseEvent.allDay);
             event.setStart(baseEvent.start);
             event.setEnd(baseEvent.end);
             event.setProp('backgroundColor', baseEvent.backgroundColor);
@@ -188,6 +283,7 @@ export class CalendarApp {
             event.setExtendedProp('recurring', baseEvent.extendedProps.recurring);
             event.setExtendedProp('reminder', baseEvent.extendedProps.reminder);
             event.setExtendedProp('category', baseEvent.extendedProps.category);
+            event.setExtendedProp('status', baseEvent.extendedProps.status);
 
             // EventManager'a kaydet
             await eventManager.saveEventChanges(baseEvent);
@@ -196,6 +292,20 @@ export class CalendarApp {
             if (recurring !== 'none') {
                 await this.handleRecurringEvents(event, baseEvent);
             }
+
+            // Etkinliği yeniden render et
+            event.remove(); // Önce etkinliği kaldır
+            const newEvent = this.calendar.addEvent(baseEvent); // Sonra yeniden ekle
+
+            // Tüm gün etkinliği ise tarihleri tekrar ayarla
+            if (isAllDay) {
+                newEvent.setAllDay(true);
+                newEvent.setStart(startDate);
+                newEvent.setEnd(endDate);
+            }
+
+            // Takvimi yenile
+            this.calendar.refetchEvents();
 
         } catch (error) {
             console.error('Form değişiklikleri kaydedilirken hata:', error);
@@ -217,9 +327,11 @@ export class CalendarApp {
             droppable: true,
             selectable: true,
             selectMirror: true,
-            dayMaxEvents: true,
+            dayMaxEvents: 3,
             weekNumbers: true,
             navLinks: true,
+            displayEventTime: true,
+            displayEventEnd: true,
             ...this.options,
 
             // Event handlers
@@ -238,30 +350,7 @@ export class CalendarApp {
             },
 
             // Tüm gün etkinlikleri için özel ayarlar
-            eventDidMount: function (info) {
-                // Hızlı etkinlikler için özel stil
-                if (info.event.extendedProps?.isQuickEvent) {
-                    info.el.style.height = '20px';
-                    info.el.style.fontSize = '0.8em';
-                    info.el.style.padding = '2px 4px';
-                    info.el.style.margin = '1px 0';
-                    info.el.style.opacity = '0.8';
-                }
-
-                if (info.event.allDay) {
-                    const startDate = new Date(info.event.start);
-                    const endDate = info.event.end ? new Date(info.event.end) : new Date(startDate);
-
-                    startDate.setHours(0, 0, 0, 0);
-                    endDate.setHours(23, 59, 59, 999);
-
-                    info.event.setDates(startDate, endDate, {
-                        allDay: true
-                    });
-
-                    info.el.classList.add('fc-event-all-day');
-                }
-            }
+            eventDidMount: this.eventDidMount.bind(this)
         });
 
         // Yöneticilere takvim referansını ver
@@ -407,6 +496,7 @@ export class CalendarApp {
         form.querySelector('#eventRecurring').value = event.extendedProps?.recurring || 'none';
         form.querySelector('#eventReminder').value = event.extendedProps?.reminder || '30';
         form.querySelector('#eventAllDay').checked = event.allDay;
+        form.querySelector('#eventStatus').value = event.extendedProps?.status || 'pending';
 
         // Renk seçiciyi güncelle
         const colorPicker = form.querySelector('.color-picker');
@@ -587,6 +677,77 @@ export class CalendarApp {
         } catch (error) {
             console.error('Toplu silme sırasında hata:', error);
             alert('Etkinlikler silinirken bir hata oluştu!');
+        }
+    }
+
+    // Tüm gün etkinlikleri için özel ayarlar
+    eventDidMount(info) {
+        // Hızlı etkinlikler için özel stil
+        if (info.event.extendedProps?.isQuickEvent) {
+            info.el.style.height = '20px';
+            info.el.style.fontSize = '0.8em';
+            info.el.style.padding = '2px 4px';
+            info.el.style.margin = '1px 0';
+            info.el.style.opacity = '0.8';
+        }
+
+        // Durum göstergesi ekle
+        const status = info.event.extendedProps?.status || 'pending';
+        const statusIcon = document.createElement('span');
+        statusIcon.className = `event-status-icon status-${status}`;
+
+        // Durum simgelerini ekle
+        switch (status) {
+            case 'completed':
+                statusIcon.innerHTML = '✓';
+                statusIcon.title = 'Tamamlandı';
+                info.el.style.opacity = '0.7';
+                info.el.style.textDecoration = 'none';
+                break;
+            case 'in-progress':
+                statusIcon.innerHTML = '⟳';
+                statusIcon.title = 'Devam Ediyor';
+                info.el.style.opacity = '1';
+                info.el.style.textDecoration = 'none';
+                break;
+            case 'pending':
+                statusIcon.innerHTML = '⌛';
+                statusIcon.title = 'Beklemede';
+                info.el.style.opacity = '1';
+                info.el.style.textDecoration = 'none';
+                break;
+            case 'cancelled':
+                statusIcon.innerHTML = '✕';
+                statusIcon.title = 'İptal Edildi';
+                info.el.style.opacity = '0.5';
+                info.el.style.textDecoration = 'line-through';
+                break;
+        }
+
+        // Önce eski simgeyi kaldır
+        const oldIcon = info.el.querySelector('.event-status-icon');
+        if (oldIcon) oldIcon.remove();
+
+        // Yeni simgeyi ekle
+        const titleEl = info.el.querySelector('.fc-event-title');
+        if (titleEl) {
+            titleEl.insertBefore(statusIcon, titleEl.firstChild);
+        }
+
+        // Tüm gün etkinlikleri için düzeltme
+        if (info.event.allDay) {
+            info.el.classList.add('fc-event-all-day');
+
+            const startDate = new Date(info.event.start);
+            const endDate = info.event.end ? new Date(info.event.end) : new Date(startDate);
+
+            startDate.setHours(0, 0, 0, 0);
+            endDate.setHours(23, 59, 59, 999);
+
+            info.event.setDates(startDate, endDate, { allDay: true });
+
+            info.el.style.display = 'block';
+            info.el.style.width = '100%';
         }
     }
 }

@@ -475,6 +475,27 @@
                     <span class="value-display">5</span>
                 </div>
             </div>
+
+            <!-- Yeni eklenen kod -->
+            <div class="form-group mb-3">
+                <label for="eventPriority">Öncelik</label>
+                <select class="form-select" id="eventPriority">
+                    <option value="low">Düşük</option>
+                    <option value="medium" selected>Orta</option>
+                    <option value="high">Yüksek</option>
+                </select>
+            </div>
+
+            <!-- Durum Seçici -->
+            <div class="form-group mb-3">
+                <label for="eventStatus">Durum</label>
+                <select class="form-select" id="eventStatus">
+                    <option value="pending" selected>Beklemede</option>
+                    <option value="in-progress">Devam Ediyor</option>
+                    <option value="completed">Tamamlandı</option>
+                    <option value="cancelled">İptal Edildi</option>
+                </select>
+            </div>
         </div>
     </div>
 
