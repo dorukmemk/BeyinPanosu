@@ -842,21 +842,24 @@ document.addEventListener('DOMContentLoaded', function () {
     // Hızlı etkinlik ekleme için input alanını ayarla
     const quickEventInput = document.getElementById('quickEventInput');
     if (quickEventInput) {
-        quickEventInput.addEventListener('keypress', function (e) {
+        quickEventInput.addEventListener('keypress', async function (e) {
             if (e.key === 'Enter') {
                 e.preventDefault();
+                console.log('Enter basıldı');
 
                 const title = this.value.trim();
                 if (!title) return;
 
-                // Bugünün tarihini al ve saati "Hızlı" saat dilimine ayarla
+                console.log('Calendar nesnesi:', calendar);
+
+                // Bugünün tarihini al
                 const now = new Date();
                 const start = new Date(now);
-                start.setHours(9, 0, 0); // Hızlı etkinlikler için sabit saat: 09:00
+                start.setHours(0, 0, 0, 0); // Günün başlangıcı
 
-                // Bitiş zamanını 30 dakika sonraya ayarla
+                // Bitiş zamanını günün sonuna ayarla
                 const end = new Date(start);
-                end.setMinutes(end.getMinutes() + 30);
+                end.setHours(23, 59, 59, 999);
 
                 // Yeni etkinlik oluştur
                 const newEventId = 'event-' + Date.now();
@@ -865,29 +868,55 @@ document.addEventListener('DOMContentLoaded', function () {
                     title: title,
                     start: start,
                     end: end,
-                    allDay: false,
-                    className: ['event-quick'], // Özel sınıf ekle
-                    backgroundColor: '#94a3b8', // Gri tonu
+                    allDay: true,
+                    className: ['event-quick'],
+                    backgroundColor: '#94a3b8',
                     borderColor: '#94a3b8',
                     extendedProps: {
-                        description: '',
-                        priority: 'low',
+                        description: 'Hızlı eklenen etkinlik',
+                        priority: 'medium',
                         recurring: 'none',
                         reminder: '0',
-                        isQuickEvent: true // Hızlı etkinlik olduğunu belirt
+                        isQuickEvent: true,
+                        status: 'pending'
                     }
                 };
 
-                // Takvime ekle
-                const calendarEvent = calendar.addEvent(newEvent);
+                try {
+                    let calendarEvent;
 
-                // API'ye ekle
-                syncEventWithAPI(calendarEvent, 'add').catch(error => {
-                    console.error('API senkronizasyon hatası:', error);
-                    calendarEvent.remove(); // Hata durumunda etkinliği takvimden kaldır
-                });
+                    // CalendarApp sınıfının calendar özelliğini kullan
+                    if (calendar && calendar.calendar) {
+                        console.log('CalendarApp üzerinden ekleniyor');
+                        calendarEvent = calendar.calendar.addEvent(newEvent);
+                    } else {
+                        console.log('Doğrudan calendar üzerinden ekleniyor');
+                        calendarEvent = calendar.addEvent(newEvent);
+                    }
 
-                saveEvents();
+                    if (calendarEvent) {
+                        console.log('Etkinlik eklendi:', calendarEvent);
+
+                        // API'ye ekle
+                        try {
+                            await syncEventWithAPI(calendarEvent, 'add');
+                        } catch (apiError) {
+                            console.error('API hatası:', apiError);
+                            calendarEvent.remove();
+                            return;
+                        }
+
+                        // Değişiklikleri kaydet
+                        await saveEvents();
+                        console.log('Etkinlik başarıyla kaydedildi');
+                    } else {
+                        console.error('Etkinlik eklenemedi');
+                    }
+                } catch (error) {
+                    console.error('Etkinlik eklenirken hata:', error);
+                }
+
+                // Input'u temizle
                 this.value = '';
             }
         });

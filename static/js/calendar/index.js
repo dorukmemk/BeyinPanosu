@@ -83,6 +83,7 @@ export class CalendarApp {
         this.initialize();
         this.setupFormListeners();
         this.setupBulkDelete();
+        this.setupQuickAdd();
         calendarInstance = this;
     }
 
@@ -749,6 +750,75 @@ export class CalendarApp {
             info.el.style.display = 'block';
             info.el.style.width = '100%';
         }
+    }
+
+    setupQuickAdd() {
+        const quickAddInput = document.getElementById('quickEventInput');
+        if (!quickAddInput) return;
+
+        quickAddInput.addEventListener('keypress', async (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const title = quickAddInput.value.trim();
+                if (!title) return;
+
+                // Bugünün tarihini al
+                const today = new Date();
+                const start = new Date(today);
+                start.setHours(0, 0, 0, 0); // Günün başlangıcı
+                const end = new Date(today);
+                end.setHours(23, 59, 59, 999); // Günün sonu
+
+                // Aynı güne ait etkinlikleri kontrol et
+                const existingEvents = this.calendar.getEvents().filter(event => {
+                    const eventDate = new Date(event.start);
+                    return eventDate.toDateString() === today.toDateString() && event.extendedProps?.isQuickEvent;
+                });
+
+                // Yeni etkinlik oluştur
+                const newEventId = 'quick-event-' + Date.now();
+                const event = {
+                    id: newEventId,
+                    title: title,
+                    start: start,
+                    end: end,
+                    allDay: true,
+                    className: ['event-quick', 'quick-event'],
+                    backgroundColor: '#94a3b8',
+                    borderColor: '#94a3b8',
+                    extendedProps: {
+                        description: 'Hızlı eklenen etkinlik',
+                        priority: 'medium',
+                        recurring: 'none',
+                        reminder: '0',
+                        isRecurring: false,
+                        recurringDays: [],
+                        category: 'event-other',
+                        status: 'pending',
+                        isQuickEvent: true
+                    }
+                };
+
+                try {
+                    // Etkinliği takvime ekle
+                    const addedEvent = this.calendar.addEvent(event);
+
+                    // Tam gün etkinliği olarak ayarla
+                    addedEvent.setAllDay(true);
+
+                    // EventManager'a kaydet
+                    await eventManager.saveEventChanges(event);
+
+                    // Input'u temizle
+                    quickAddInput.value = '';
+
+                    // Takvimi yenile
+                    this.calendar.refetchEvents();
+                } catch (error) {
+                    console.error('Hızlı etkinlik eklenirken hata:', error);
+                }
+            }
+        });
     }
 }
 

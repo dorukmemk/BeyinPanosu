@@ -762,3 +762,78 @@
 .fc-event {
     transition: opacity 0.3s, text-decoration 0.3s;
 }
+
+.quick-add {
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 600px;
+    z-index: 100;
+}
+
+#quickEventInput {
+    width: 100%;
+    padding: 16px 24px;
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-size: 1em;
+    box-shadow: var(--shadow-lg);
+    transition: all 0.3s ease;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+#quickEventInput:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px var(--primary-color-alpha);
+    transform: translateY(-2px);
+}
+
+#quickEventInput::placeholder {
+    color: var(--text-muted);
+}
+
+/* Hızlı eklenen etkinlikler için özel stil */
+.fc-event.quick-event {
+    background: linear-gradient(45deg, #94a3b8, #64748b) !important;
+    border: none !important;
+    padding: 8px 12px !important;
+    margin: 2px 0 !important;
+    font-size: 0.9em !important;
+    opacity: 0.9 !important;
+    transition: all 0.3s ease !important;
+    height: auto !important;
+    min-height: 28px !important;
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+}
+
+.fc-event.quick-event:hover {
+    opacity: 1 !important;
+    transform: translateY(-1px) !important;
+    box-shadow: var(--shadow-md) !important;
+}
+
+.fc-event.quick-event .fc-event-title {
+    flex: 1;
+    padding: 4px 0;
+    font-weight: 500;
+    color: white !important;
+}
+
+.fc-event.quick-event .fc-event-time {
+    display: none !important;
+}
+
+/* Tam gün etkinlikleri için özel stil */
+.fc-event.quick-event.fc-event-all-day {
+    background: linear-gradient(45deg, #94a3b8, #64748b) !important;
+    border-radius: 8px !important;
+    margin: 2px 4px !important;
+}

@@ -1252,12 +1252,18 @@
     "2025-02-10": {
         "workTime": 0,
         "breakTime": 0,
-        "sets": 1,
+        "sets": 2,
         "activities": [
             {
                 "type": "work",
                 "startTime": "18:47:58",
                 "endTime": "18:48:04",
+                "duration": 0
+            },
+            {
+                "type": "work",
+                "startTime": "20:41:15",
+                "endTime": "20:41:21",
                 "duration": 0
             }
         ]
