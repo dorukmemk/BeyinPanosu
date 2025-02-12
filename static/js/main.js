@@ -1119,4 +1119,15 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     }
+
+    // Bildirim izinlerini kontrol et ve iste
+    if ('Notification' in window) {
+        if (Notification.permission !== 'granted' && Notification.permission !== 'denied') {
+            Notification.requestPermission().then(function (permission) {
+                if (permission === 'granted') {
+                    console.log('Bildirim izni alındı');
+                }
+            });
+        }
+    }
 });

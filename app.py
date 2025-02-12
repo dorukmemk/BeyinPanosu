@@ -344,6 +344,10 @@ def get_youtube_video_info():
         print(f"Genel Hata: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
+@app.route('/tasks')
+def tasks():
+    return render_template('tasks.html')
+
 if __name__ == '__main__':
     # Mevcut route'ları logla
     print("Kayıtlı route'lar:")

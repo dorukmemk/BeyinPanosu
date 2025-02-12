@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}Görevler{% endblock %}
+
+{% block additional_head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/tasks.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="tasks-container">
+    <div class="tasks-sidebar">
+        <div class="category-list">
+            <h3>Kategoriler</h3>
+            <div class="category-items"></div>
+            <button class="add-category-btn">+ Yeni Kategori</button>
+        </div>
+        <div class="tags-section">
+            <h3>Etiketler</h3>
+            <div class="tags-container"></div>
+        </div>
+    </div>
+
+    <div class="tasks-main">
+        <div class="tasks-header">
+            <div class="view-options">
+                <button class="view-btn active" data-view="list">Liste</button>
+                <button class="view-btn" data-view="kanban">Kanban</button>
+                <button class="view-btn" data-view="canvas">Canvas</button>
+            </div>
+            <button class="add-task-btn">+ Yeni Görev</button>
+        </div>
+
+        <div class="tasks-content">
+            <div class="view-container list-view active">
+                <!-- Liste görünümü içeriği buraya gelecek -->
+            </div>
+            <div class="view-container kanban-view">
+                <!-- Kanban görünümü içeriği buraya gelecek -->
+            </div>
+            <div class="view-container canvas-view">
+                <canvas id="taskCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal pencereler -->
+<div class="modal task-modal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h2>Yeni Görev</h2>
+        <form id="task-form">
+            <input type="text" name="title" placeholder="Görev başlığı" required>
+            <textarea name="description" placeholder="Açıklama"></textarea>
+            <div class="task-options">
+                <div class="priority-selector">
+                    <label>Öncelik:</label>
+                    <select name="priority">
+                        <option value="low">Düşük</option>
+                        <option value="medium">Orta</option>
+                        <option value="high">Yüksek</option>
+                    </select>
+                </div>
+                <div class="due-date">
+                    <label>Bitiş Tarihi:</label>
+                    <input type="date" name="dueDate">
+                </div>
+                <div class="tags-input">
+                    <label>Etiketler:</label>
+                    <input type="text" name="tags" placeholder="Etiketleri virgülle ayırın">
+                </div>
+            </div>
+            <button type="submit">Kaydet</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/tasks/taskManager.js') }}"></script>
+<script src="{{ url_for('static', filename='js/tasks/taskCanvas.js') }}"></script>
+<script src="{{ url_for('static', filename='js/tasks/taskViews.js') }}"></script>
+{% endblock %}

@@ -80,6 +80,7 @@ export class CalendarApp {
         this.activeEventId = null;
         this.isBulkDeleteMode = false;
         this.selectedForDelete = new Set();
+        this.reminders = new Map();
         this.initialize();
         this.setupFormListeners();
         this.setupBulkDelete();
@@ -314,6 +315,20 @@ export class CalendarApp {
     }
 
     async initialize() {
+        // Bildirim izinlerini hemen kontrol et ve iste
+        if ('Notification' in window) {
+            // Hemen bildirim izni iste
+            const permission = await Notification.requestPermission();
+            console.log('Bildirim izni durumu:', permission);
+
+            if (permission === 'granted') {
+                // Test bildirimi gönder
+                new Notification('Takvim Bildirimleri Aktif', {
+                    body: 'Test bildirimi başarıyla gönderildi!'
+                });
+            }
+        }
+
         // Takvimi oluştur
         this.calendar = new FullCalendar.Calendar(this.calendarEl, {
             initialView: 'dayGridMonth',
@@ -363,6 +378,12 @@ export class CalendarApp {
 
         // Takvimi render et
         this.calendar.render();
+
+        // Hatırlatıcıları daha sık kontrol et (15 saniyede bir)
+        setInterval(() => {
+            console.log('Hatırlatıcılar kontrol ediliyor...');
+            this.checkReminders();
+        }, 15000);
     }
 
     async loadEvents() {
@@ -819,6 +840,62 @@ export class CalendarApp {
                 }
             }
         });
+    }
+
+    checkReminders() {
+        const now = new Date();
+        console.log('Hatırlatıcı kontrolü başladı:', now.toLocaleString());
+
+        this.calendar.getEvents().forEach(event => {
+            const reminder = event.extendedProps?.reminder;
+            if (!reminder || reminder === 'none') return;
+
+            const eventStart = new Date(event.start);
+            const reminderMinutes = parseInt(reminder);
+            const reminderTime = new Date(eventStart.getTime() - (reminderMinutes * 60 * 1000));
+
+            console.log('Etkinlik kontrolü:', {
+                etkinlik: event.title,
+                başlangıç: eventStart.toLocaleString(),
+                hatırlatmaZamanı: reminderTime.toLocaleString(),
+                şuAn: now.toLocaleString()
+            });
+
+            // Hatırlatma zamanı geldi mi kontrol et
+            if (now >= reminderTime && now <= eventStart) {
+                // Doğrudan bildirimi gönder
+                this.sendNotification(event);
+            }
+        });
+    }
+
+    sendNotification(event) {
+        try {
+            // Bildirim izni kontrolü
+            if (Notification.permission !== 'granted') {
+                console.log('Bildirim izni yok');
+                return;
+            }
+
+            console.log('Bildirim gönderiliyor:', event.title);
+
+            // Basit bir bildirim oluştur
+            const notification = new Notification(event.title, {
+                body: `${event.extendedProps?.reminder} dakika içinde başlayacak!`,
+                requireInteraction: true
+            });
+
+            // Bildirime tıklandığında
+            notification.onclick = () => {
+                window.focus();
+                this.calendar.gotoDate(event.start);
+            };
+
+            console.log('Bildirim başarıyla gönderildi');
+
+        } catch (error) {
+            console.error('Bildirim gönderme hatası:', error);
+        }
     }
 }
 
